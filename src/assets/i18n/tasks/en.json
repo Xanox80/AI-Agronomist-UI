@@ -1,0 +1,43 @@
+{
+  "tasks": {
+    "title": "Tasks",
+    "syncBadge": "Waiting to sync",
+    "type": { "treatment": "Treatment", "reinspection": "Re-inspection", "sampling": "Sampling" },
+    "status": { "open": "Open", "in_progress": "In progress", "done": "Done", "cancelled": "Cancelled" },
+    "priority": { "low": "Low", "normal": "Normal", "high": "High", "urgent": "Urgent" },
+    "transition": { "open": "Reopen", "in_progress": "Start", "done": "Complete", "cancelled": "Cancel" },
+    "view": { "list": "List", "board": "Board" },
+    "filter": { "status": "Status", "field": "Field", "assignee": "Assignee", "priority": "Priority" },
+    "list": { "add": "New task", "empty": "No tasks" },
+    "form": {
+      "createTitle": "New task",
+      "editTitle": "Edit task",
+      "type": "Type",
+      "title": "Title",
+      "field": "Field",
+      "priority": "Priority",
+      "assignee": "Assignee",
+      "deadline": "Deadline",
+      "notes": "Notes"
+    },
+    "detail": {
+      "edit": "Edit",
+      "diagnosis": "Diagnosis",
+      "recommendation": "Recommendation",
+      "openRecommendation": "Open recommendation",
+      "photos": "Photos",
+      "photoAlt": "Field scouting photo",
+      "mapPin": "Location on the map",
+      "completedAt": "Completed"
+    },
+    "complete": {
+      "title": "Treatment record",
+      "product": "Product",
+      "dose": "Application rate",
+      "unit": "Unit",
+      "area": "Treated area, ha",
+      "date": "Treatment date",
+      "submit": "Complete task"
+    }
+  }
+}

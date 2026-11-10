@@ -1,0 +1,320 @@
+@use 'variables';
+@use 'mixins';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--p-font-family, 'Inter', system-ui, sans-serif);
+  background: var(--ap-bg);
+  color: var(--ap-text);
+}
+
+/* ── Page layout helpers ── */
+.scout-page {
+  padding: var(--scout-content-padding);
+}
+
+.scout-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ap-text);
+  }
+}
+
+/* ── PrimeNG global overrides ── */
+
+/* DataTable */
+.p-datatable {
+  .p-datatable-thead > tr > th {
+    background: var(--ap-muted-bg);
+    color: var(--ap-text-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--ap-border);
+  }
+
+  .p-datatable-tbody > tr > td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--ap-border);
+    font-size: 0.875rem;
+    color: var(--ap-text);
+  }
+
+  .p-datatable-tbody > tr:hover > td {
+    background: var(--ap-accent-dim);
+  }
+}
+
+/* ── Buttons ── */
+
+// Base properties of all buttons
+.p-button {
+  border-radius: var(--ap-radius-sm) !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, border-color 0.15s, color 0.15s !important;
+
+  &.p-button-sm {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+// ── Filled (primary / default) ──
+.p-button.p-button-primary,
+.p-button:not(.p-button-secondary):not(.p-button-success):not(.p-button-danger):not(.p-button-warn):not(.p-button-info):not(.p-button-help):not(.p-button-contrast):not(.p-button-text):not(.p-button-outlined) {
+  background: var(--ap-accent) !important;
+  border-color: var(--ap-accent) !important;
+  color: oklch(99% 0 0) !important;
+  &:hover  { background: oklch(38% 0.13 138) !important; border-color: oklch(38% 0.13 138) !important; }
+  &:active { background: oklch(35% 0.12 138) !important; border-color: oklch(35% 0.12 138) !important; }
+}
+
+// ── Filled success ──
+.p-button.p-button-success:not(.p-button-text):not(.p-button-outlined) {
+  background: var(--ap-ok) !important;
+  border-color: var(--ap-ok) !important;
+  color: oklch(99% 0 0) !important;
+  &:hover  { background: oklch(58% 0.17 145) !important; border-color: oklch(58% 0.17 145) !important; }
+  &:active { background: oklch(55% 0.17 145) !important; border-color: oklch(55% 0.17 145) !important; }
+}
+
+// ── Filled danger ──
+.p-button.p-button-danger:not(.p-button-text):not(.p-button-outlined) {
+  background: var(--ap-danger) !important;
+  border-color: var(--ap-danger) !important;
+  color: oklch(99% 0 0) !important;
+  &:hover  { background: oklch(56% 0.22 25) !important; border-color: oklch(56% 0.22 25) !important; }
+}
+
+// ── Filled warn ──
+.p-button.p-button-warn:not(.p-button-text):not(.p-button-outlined) {
+  background: var(--ap-warn) !important;
+  border-color: var(--ap-warn) !important;
+  color: oklch(15% 0.02 80) !important;
+  &:hover  { background: oklch(68% 0.18 80) !important; border-color: oklch(68% 0.18 80) !important; }
+}
+
+// ── Filled secondary ──
+.p-button.p-button-secondary:not(.p-button-text):not(.p-button-outlined) {
+  background: var(--ap-muted-bg) !important;
+  border-color: var(--ap-border) !important;
+  color: var(--ap-text-sec) !important;
+  &:hover  { background: var(--ap-border) !important; color: var(--ap-text) !important; }
+}
+
+// ── Outlined ──
+.p-button.p-button-outlined {
+  background: transparent !important;
+
+  &.p-button-secondary {
+    border-color: var(--ap-border) !important;
+    color: var(--ap-text-sec) !important;
+    &:hover { background: var(--ap-muted-bg) !important; color: var(--ap-text) !important; }
+  }
+  &.p-button-success {
+    border-color: var(--ap-ok) !important;
+    color: var(--ap-ok) !important;
+    &:hover { background: var(--ap-ok-dim) !important; }
+  }
+  &.p-button-danger {
+    border-color: var(--ap-danger) !important;
+    color: var(--ap-danger) !important;
+    &:hover { background: var(--ap-danger-dim) !important; }
+  }
+  &.p-button-warn {
+    border-color: var(--ap-warn) !important;
+    color: var(--ap-warn) !important;
+    &:hover { background: var(--ap-warn-dim) !important; }
+  }
+  &:not(.p-button-secondary):not(.p-button-success):not(.p-button-danger):not(.p-button-warn) {
+    border-color: var(--ap-accent) !important;
+    color: var(--ap-accent) !important;
+    &:hover { background: var(--ap-accent-dim) !important; }
+  }
+}
+
+// ── Text / ghost ──
+.p-button.p-button-text {
+  background: transparent !important;
+  border-color: transparent !important;
+
+  &.p-button-secondary {
+    color: var(--ap-text-muted) !important;
+    &:hover { color: var(--ap-text-sec) !important; background: var(--ap-muted-bg) !important; }
+  }
+  &.p-button-danger {
+    color: var(--ap-danger) !important;
+    &:hover { background: var(--ap-danger-dim) !important; }
+  }
+  &.p-button-info {
+    color: var(--ap-info) !important;
+    &:hover { background: var(--ap-info-dim) !important; }
+  }
+  &.p-button-success {
+    color: var(--ap-ok) !important;
+    &:hover { background: var(--ap-ok-dim) !important; }
+  }
+  &.p-button-warn {
+    color: var(--ap-warn) !important;
+    &:hover { background: var(--ap-warn-dim) !important; }
+  }
+}
+
+/* Cards */
+.p-card {
+  border: 1px solid var(--ap-border);
+  border-radius: var(--ap-radius);
+  box-shadow: none;
+
+  .p-card-body {
+    padding: 1rem;
+  }
+}
+
+/* Dialogs */
+.p-dialog {
+  border-radius: var(--ap-radius);
+
+  .p-dialog-header {
+    padding: 1rem 1.25rem 0.75rem;
+  }
+
+  .p-dialog-content {
+    padding: 0 1.25rem 1rem;
+  }
+}
+
+/* ── Confirm dialog ──
+   PrimeNG renders the dialog in <body>, so these styles must be global. */
+.app-confirm.p-confirmdialog {
+  border-radius: var(--ap-radius);
+  overflow: hidden;
+  box-shadow: 0 12px 40px oklch(0% 0 0 / 0.18);
+
+  .p-dialog-header {
+    padding: 1.25rem 1.4rem 0.5rem;
+    border-bottom: none;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ap-text);
+  }
+
+  .p-dialog-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 0.35rem 1.4rem 0.75rem;
+  }
+
+  /* Coloured icon badge left of the text */
+  .p-confirmdialog-icon {
+    flex: 0 0 auto;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    margin-top: 0.05rem;
+  }
+
+  .p-confirmdialog-message {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ap-text-sec);
+  }
+
+  .p-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    padding: 0.5rem 1.4rem 1.25rem;
+    border-top: none;
+  }
+}
+
+/* Icon tone per dialog purpose */
+.app-confirm--warn .p-confirmdialog-icon {
+  background: var(--ap-warn-dim);
+  color: var(--ap-warn);
+}
+
+.app-confirm--danger .p-confirmdialog-icon {
+  background: var(--ap-danger-dim);
+  color: var(--ap-danger);
+}
+
+/* Tags / badges */
+.p-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: var(--ap-radius-sm);
+  padding: 0.2rem 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* Inputs */
+.p-inputtext {
+  border-radius: var(--ap-radius-sm);
+  font-size: 0.875rem;
+}
+
+/* Select */
+.p-select {
+  border-radius: var(--ap-radius-sm);
+}
+
+.p-panel {
+  border: 1px solid var(--ap-border);
+  border-radius: var(--ap-radius);
+
+  .p-panel-header {
+    background: var(--ap-muted-bg);
+    border-bottom: 1px solid var(--ap-border);
+    border-radius: var(--ap-radius) var(--ap-radius) 0 0;
+    padding: 0.75rem 1rem;
+  }
+
+  .p-panel-content {
+    padding: 1rem;
+  }
+}
+
+/* ── Field accessibility: minimum touch target ── */
+.p-button,
+.p-select,
+.p-inputtext,
+.p-checkbox,
+.p-radiobutton {
+  min-height: var(--ap-touch-min);
+}
+
+.p-button {
+  min-width: var(--ap-touch-min);
+}
+
+:root[data-theme="sun"] {
+  .p-button,
+  .p-card,
+  .p-inputtext,
+  .p-select {
+    border-width: 2px;
+  }
+}

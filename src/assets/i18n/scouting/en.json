@@ -1,0 +1,103 @@
+{
+  "scouting": {
+    "title": "Scouting",
+    "quickTitle": "Quick capture",
+    "progress": "Step {{step}} of {{total}}",
+    "submit": "Send for diagnosis",
+    "saveQuick": "Save observation",
+    "submitFailed": "Could not save the observation. Please try again.",
+    "field": {
+      "title": "Field, crop and growth stage",
+      "gpsFix": "GPS fixed (accuracy ~{{accuracy}} m)",
+      "noGps": "GPS unavailable: pick the field from the list",
+      "suggested": "Field suggested from your location",
+      "field": "Field",
+      "pick": "Select a field",
+      "crop": "Crop",
+      "pickCrop": "Select a crop",
+      "bbch": "Growth stage (BBCH)",
+      "pickBbch": "Select a stage"
+    },
+    "object": {
+      "title": "What are you photographing?",
+      "leaf": "Leaf",
+      "ear": "Ear / cob / head",
+      "stem": "Stem",
+      "fruit": "Fruit / pod",
+      "pest": "Pest",
+      "field": "General field view"
+    },
+    "hints": {
+      "title": "How to shoot",
+      "leaf": {
+        "frame": "Frame a single leaf with an affected area and healthy tissue next to it.",
+        "distance": "Shoot from 15-30 cm so the lesion fills a noticeable part of the frame.",
+        "light": "Soft, diffuse light without hard shadows; do not shoot into the sun.",
+        "extra": "Take a separate photo of the underside of the leaf: pests and sporulation often hide there."
+      },
+      "ear": {
+        "frame": "Frame the whole ear (cob, head) including its top.",
+        "distance": "Stand 20-40 cm away so the organ fills most of the frame.",
+        "light": "Side light, no glare on the grain.",
+        "extra": "For grain damage add a close-up with the ear opened."
+      },
+      "stem": {
+        "frame": "Frame the affected part of the stem and the node below it.",
+        "distance": "Shoot from 15-25 cm with the stem along the diagonal of the frame.",
+        "light": "Even light without leaf shadows.",
+        "extra": "If possible, add a separate photo of the stem base and root collar."
+      },
+      "fruit": {
+        "frame": "Frame one whole fruit or pod with the lesion in the center.",
+        "distance": "Shoot from 10-20 cm.",
+        "light": "Light without glare on the surface.",
+        "extra": "Add a photo of a cross-section or the back side of the fruit."
+      },
+      "pest": {
+        "frame": "Keep the pest centered and in focus; show the damage next to it if you can.",
+        "distance": "As close as focus allows (5-10 cm); the pest should fill at least a quarter of the frame.",
+        "light": "Bright diffuse light, no shadow from your hand or phone.",
+        "extra": "Place the 5 cm scale card next to it so the size and stage can be estimated."
+      },
+      "field": {
+        "frame": "Show the general view of the area: crop rows and the edge of the affected patch.",
+        "distance": "Shoot from standing height with the horizon in the upper third of the frame.",
+        "light": "Avoid backlight; clear weather is best.",
+        "extra": "Add a close-up of the patch and a photo of a healthy area for comparison."
+      }
+    },
+    "photos": {
+      "title": "Photos (1-{{max}})",
+      "take": "Take a photo",
+      "retake": "Retake",
+      "remove": "Remove",
+      "alt": "Photo {{n}}",
+      "scaleMarker": "A 5 cm scale card is in the photo"
+    },
+    "angles": {
+      "1": "Photo 1: overview of the plant or the affected area.",
+      "2": "Photo 2: close-up with the lesion in the center.",
+      "3": "Photo 3: another angle, for example the underside of the leaf or a cross-section."
+    },
+    "quality": {
+      "blurry": "The photo is blurry: wipe the lens, hold the phone still and wait for focus.",
+      "too_dark": "The photo is too dark: shoot in better light.",
+      "too_bright": "The photo is overexposed: avoid direct sun and glare.",
+      "no_plant": "Too little plant in the photo: move closer so the plant fills most of the frame.",
+      "too_small": "The object is too small in the frame: move closer.",
+      "unassessed": "The photo quality could not be checked. Make sure it is sharp and well lit.",
+      "unspecified": "The photo quality is not sufficient for an accurate diagnosis.",
+      "retake": "We recommend retaking the photo for a more accurate diagnosis."
+    },
+    "note": {
+      "title": "Note",
+      "text": "Text note",
+      "placeholder": "What you noticed: where, on which plants, how many",
+      "record": "Record voice",
+      "stop": "Stop recording",
+      "recorded": "Voice note recorded ({{sec}} s)",
+      "discard": "Discard voice note",
+      "micDenied": "Microphone access is denied. Allow it in the browser settings."
+    }
+  }
+}

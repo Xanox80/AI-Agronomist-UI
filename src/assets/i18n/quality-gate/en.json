@@ -1,0 +1,22 @@
+{
+  "qualityGate": {
+    "title": "Photo quality check",
+    "passed": "The photo is good enough for analysis",
+    "failed": "Please retake the photo",
+    "check": {
+      "sharpness": "Sharpness",
+      "exposure": "Exposure",
+      "plantCoverage": "Plant in frame",
+      "objectSize": "Object size"
+    },
+    "hint": {
+      "blurry": "The photo is blurry. Hold the phone steady, wait for focus and move closer to the leaf.",
+      "tooDark": "Too dark. Shoot in daylight or turn so that light falls on the plant.",
+      "tooBright": "Too bright. Step out of direct sun or shade the leaf.",
+      "clippedHighlights": "Parts of the frame are blown out. Avoid glare and direct sun on the leaf.",
+      "clippedShadows": "Shadows are too deep. Change the angle so the leaf is lit.",
+      "noPlant": "No plant is visible. Point the camera at the affected leaf, ear or pest.",
+      "tooFar": "The plant is too small in the frame. Move closer so the damage fills more of the photo."
+    }
+  }
+}

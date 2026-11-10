@@ -1,0 +1,42 @@
+<div class="shell" [class.shell--collapsed]="sidebarCollapsed()">
+  <header class="shell__header">
+    <p-button
+      class="shell__toggle"
+      icon="pi pi-bars"
+      severity="secondary"
+      [text]="true"
+      [ariaLabel]="'shell.toggleSidebar' | translate"
+      [attr.aria-expanded]="!sidebarCollapsed()"
+      (onClick)="toggleSidebar()"
+    />
+    <span class="shell__brand">{{ 'shell.brand' | translate }}</span>
+    @if (!online()) {
+      <span class="shell__offline" role="status"><i class="pi pi-wifi"></i> {{ 'common.offline' | translate }}</span>
+    }
+    <span class="shell__spacer"></span>
+    @if (auth.user(); as user) {
+      <span class="shell__user">{{ user.displayName }}</span>
+    }
+    <app-display-controls />
+    <p-button
+      icon="pi pi-sign-out"
+      severity="secondary"
+      [text]="true"
+      [ariaLabel]="'shell.logout' | translate"
+      (onClick)="auth.logout()"
+    />
+  </header>
+
+  <nav class="shell__nav" [attr.aria-label]="'shell.navigation' | translate">
+    @for (item of navItems(); track item.path) {
+      <a class="nav-link" [routerLink]="item.path" routerLinkActive="nav-link--active">
+        <i class="pi" [class]="item.icon"></i>
+        <span class="nav-link__label">{{ item.labelKey | translate }}</span>
+      </a>
+    }
+  </nav>
+
+  <main class="shell__content">
+    <router-outlet />
+  </main>
+</div>

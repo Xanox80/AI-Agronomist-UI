@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "title": "Settings",
+    "display": {
+      "title": "Language and display"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "geo": "Store observation geolocation",
+      "geoHint": "When off, coordinates are not saved with new observations."
+    },
+    "region": {
+      "title": "Directory region",
+      "hint": "The directory pack (diagnoses, thresholds, products) for your region is cached for offline use.",
+      "refresh": "Refresh pack",
+      "version": "Directory version: {{version}}",
+      "stale": "Not verified for {{days}} days",
+      "demo": "Demo data",
+      "refreshed": "Pack refreshed to version {{version}}",
+      "chiefOnly": "Only the chief agronomist can change the region.",
+      "failed": "Could not update the region pack. Check the connection."
+    },
+    "autoApprove": {
+      "title": "Recommendation auto-approval",
+      "hint": "Chief agronomist only. Quarantine and critical diagnoses always need manual approval."
+    },
+    "category": {
+      "disease": "Diseases",
+      "pest": "Pests",
+      "weed": "Weeds",
+      "nutrition": "Nutrition",
+      "abiotic_stress": "Abiotic stress"
+    },
+    "stock": {
+      "link": "Warehouse (product stock)",
+      "title": "Warehouse",
+      "search": "Search product",
+      "product": "Product",
+      "quantity": "In stock",
+      "warehouse": "Warehouse",
+      "expires": "Expires",
+      "empty": "No stock records"
+    },
+    "saveFailed": "Could not save the setting. Try again."
+  }
+}

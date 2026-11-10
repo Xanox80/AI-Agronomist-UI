@@ -1,0 +1,60 @@
+{
+  "expert": {
+    "title": "Expert: disputed cases",
+    "status": { "open": "Open", "in_review": "In review", "resolved": "Resolved" },
+    "reason": {
+      "low_confidence": "Low confidence",
+      "user_model_disagreement": "Disagrees with model",
+      "rare_class": "Rare class",
+      "out_of_distribution": "Unknown object",
+      "unsure_mode": "Not-sure mode"
+    },
+    "category": {
+      "disease": "Disease", "pest": "Pest", "weed": "Weed", "nutrition": "Nutrition",
+      "abiotic_stress": "Abiotic stress", "mechanical_damage": "Mechanical damage", "normal": "Normal"
+    },
+    "role": {
+      "scout": "Scouting agronomist", "chief_agronomist": "Chief agronomist", "mechanic": "Mechanic", "expert": "Phytopathology expert"
+    },
+    "queue": { "empty": "No disputed cases", "priority": "Priority" },
+    "detail": {
+      "title": "Case labeling",
+      "model": "Model result",
+      "userCorrection": "Agronomist correction",
+      "labels": "Labels",
+      "noLabels": "No labels yet",
+      "consensus": "Consensus (by trust weight)",
+      "resolve": "Resolve case by consensus",
+      "label": "Your label",
+      "claim": "Claim case"
+    },
+    "trust": { "weight": "weight", "yours": "Your trust level" },
+    "viewer": {
+      "photoAlt": "Crop photo from the field",
+      "canvasHint": "Tap the photo to outline the affected area",
+      "undo": "Undo point",
+      "clear": "Clear"
+    },
+    "label": {
+      "action": "Action",
+      "actions": {
+        "confirm": "Confirm", "change": "Change diagnosis", "add_new_class": "New class", "reject": "Reject"
+      },
+      "confirmHint": "The model's top diagnosis will be confirmed",
+      "diagnosis": "Diagnosis",
+      "comment": "Comment",
+      "regionSet": "Affected area outlined",
+      "regionNone": "No outline (optional)",
+      "submit": "Save label",
+      "newClass": {
+        "code": "Class code", "nameUk": "Name (Ukrainian)", "nameEn": "Name (English)",
+        "category": "Problem type", "crops": "Crops"
+      },
+      "errors": {
+        "noModelDiagnosis": "The model proposed no catalogue diagnosis",
+        "diagnosisRequired": "Choose a diagnosis",
+        "newClassIncomplete": "Fill in code, names and problem type"
+      }
+    }
+  }
+}

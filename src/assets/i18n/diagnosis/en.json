@@ -1,0 +1,61 @@
+{
+  "diagnosis": {
+    "title": "Diagnosis",
+    "loading": "Analysing photos...",
+    "loadFailed": "Could not get the diagnosis. Please try again.",
+    "actionFailed": "The action failed. Check the connection and retry.",
+    "refinedArrived": "The server refined this diagnosis; the result below is updated.",
+    "pendingServer": "Pending server analysis. The observation is saved on the device; the diagnosis appears after sync.",
+    "uncertain": {
+      "title": "The system is not sure",
+      "body": "The case was sent to an expert phytopathologist. Add more photos from other angles to refine the diagnosis.",
+      "addPhotos": "Add photos"
+    },
+    "topHypotheses": "Most likely diagnoses",
+    "references": "For comparison",
+    "photoAlt": "Crop photo with the affected region highlighted",
+    "questions": "Clarifying questions",
+    "applyAnswers": "Refine diagnosis",
+    "answer": { "yes": "Yes", "no": "No", "unsure": "Not sure" },
+    "confirmTitle": "Confirm the diagnosis",
+    "confirmTop": "Confirm the most likely diagnosis",
+    "correctLabel": "Or correct the diagnosis",
+    "pickFromCatalogue": "Pick from the catalogue",
+    "confirmCorrection": "Confirm correction",
+    "confirmed": "Diagnosis confirmed",
+    "createTask": "Create task",
+    "pest": {
+      "title": "Pest",
+      "species": "Species",
+      "stage": "Stage",
+      "perPlant": "Density, insects/plant",
+      "perM2": "Density, insects/m²"
+    },
+    "pestStage": {
+      "imago": "Adult (imago)",
+      "larva": "Larva",
+      "nymph": "Nymph",
+      "egg": "Egg",
+      "pupa": "Pupa",
+      "unknown": "Unknown"
+    },
+    "organ": {
+      "leaf": "Leaf",
+      "ear": "Ear",
+      "stem": "Stem",
+      "fruit": "Fruit",
+      "root": "Root",
+      "pest": "Pest",
+      "field": "Field"
+    },
+    "category": {
+      "disease": "Disease",
+      "pest": "Pest",
+      "weed": "Weed",
+      "nutrition": "Nutrient deficiency",
+      "abiotic_stress": "Abiotic stress",
+      "mechanical_damage": "Mechanical damage",
+      "normal": "Normal"
+    }
+  }
+}

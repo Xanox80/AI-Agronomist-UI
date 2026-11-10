@@ -1,0 +1,54 @@
+{
+  "catalogAdmin": {
+    "title": "Directories",
+    "stale": "Directories not verified for {{days}} days. Check them against the State Register of Pesticides and Agrochemicals.",
+    "demo": "Contains demo data: do not use for real decisions until verified.",
+    "version": "Directory version: {{version}}",
+    "verify": "Mark as verified",
+    "directory": {
+      "diagnoses": "Diagnoses",
+      "thresholds": "Thresholds",
+      "products": "Products"
+    },
+    "col": {
+      "name": "Name",
+      "detail": "Details",
+      "source": "Source",
+      "verified": "Actuality"
+    },
+    "demoTag": "Demo",
+    "staleTag": "Stale",
+    "entity": {
+      "product": "Product",
+      "registration": "Registration",
+      "threshold": "Threshold",
+      "diagnosis": "Diagnosis",
+      "active_substance": "Active substance",
+      "reference_image": "Reference image",
+      "crop": "Crop"
+    },
+    "operation": {
+      "create": "Create",
+      "update": "Update",
+      "delete": "Delete"
+    },
+    "propose": {
+      "title": "Propose a change",
+      "new": "New proposal",
+      "forRow": "Change the selected record.",
+      "forNew": "Create a new record (JSON).",
+      "operation": "Operation",
+      "payload": "Record data (JSON)",
+      "invalidPayload": "Data must be a valid JSON object.",
+      "submit": "Submit for approval"
+    },
+    "queue": {
+      "title": "Approval queue",
+      "empty": "No pending proposals",
+      "comment": "Comment (required to reject)",
+      "approve": "Approve",
+      "reject": "Reject",
+      "commentRequired": "Enter a comment to reject the proposal."
+    }
+  }
+}

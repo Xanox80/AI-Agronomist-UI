@@ -1,0 +1,20 @@
+{
+  "shell": {
+    "brand": "AP Scout",
+    "navigation": "Main menu",
+    "toggleSidebar": "Collapse or expand the menu",
+    "logout": "Sign out",
+    "displayControls": "Language and display mode",
+    "sunMode": "Sun mode (high contrast)",
+    "nav": {
+      "home": "Home",
+      "scouting": "Scouting",
+      "fields": "Fields",
+      "tasks": "Tasks",
+      "heatmap": "Infestation map",
+      "expert": "Expert queue",
+      "catalogAdmin": "Catalogue",
+      "settings": "Settings"
+    }
+  }
+}

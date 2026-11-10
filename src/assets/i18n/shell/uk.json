@@ -1,0 +1,20 @@
+{
+  "shell": {
+    "brand": "AP Scout",
+    "navigation": "Головне меню",
+    "toggleSidebar": "Згорнути або розгорнути меню",
+    "logout": "Вийти",
+    "displayControls": "Мова та режим екрана",
+    "sunMode": "Сонячний режим (високий контраст)",
+    "nav": {
+      "home": "Головна",
+      "scouting": "Скаутинг",
+      "fields": "Поля",
+      "tasks": "Завдання",
+      "heatmap": "Карта уражень",
+      "expert": "Черга експерта",
+      "catalogAdmin": "Довідник",
+      "settings": "Налаштування"
+    }
+  }
+}

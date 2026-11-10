@@ -1,0 +1,23 @@
+export const HEATMAP_CONFIG = {
+  fieldsPageSize: 100,
+  seasonCount: 5,
+  heatRadiusPx: 25,
+  heatBlurPx: 15,
+  heatMinOpacity: 0.35,
+  heatMaxZoom: 17,
+  heatMaxWeight: 1,
+  heatGradientStops: [
+    { stop: 0.3, token: '--ap-ok' },
+    { stop: 0.65, token: '--ap-warn' },
+    { stop: 1, token: '--ap-danger' },
+  ],
+  mapFitPadding: [24, 24] as [number, number],
+  mapMaxFitZoom: 16,
+  tileAttribution: '&copy; OpenStreetMap contributors',
+  topDiagnosesShown: 5,
+  exportFileBase: 'observations',
+  nameKeyByLang: { en: 'nameEn', uk: 'nameUk' } as Record<string, 'nameEn' | 'nameUk'>,
+  defaultNameKey: 'nameUk',
+  exportRoles: ['chief_agronomist'] as const,
+  weeksShown: 12,
+} as const;

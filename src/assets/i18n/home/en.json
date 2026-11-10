@@ -1,0 +1,12 @@
+{
+  "home": {
+    "title": "Home",
+    "newScouting": "New scouting",
+    "syncStatus": "Sync status",
+    "online": "Online",
+    "pendingChanges": "Waiting to upload",
+    "unknown": "unknown",
+    "openTasks": "My open tasks",
+    "noOpenTasks": "No open tasks"
+  }
+}

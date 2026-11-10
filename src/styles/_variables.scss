@@ -1,0 +1,74 @@
+:root {
+  /* ── Surface ── */
+  --ap-bg:          oklch(97% 0.004 250);
+  --ap-surface:     oklch(100% 0 0);
+  --ap-border:      oklch(90% 0.008 250);
+  --ap-muted-bg:    oklch(95% 0.005 250);
+
+  /* ── Text ── */
+  --ap-text:        oklch(20% 0.02 260);
+  --ap-text-sec:    oklch(45% 0.015 260);
+  --ap-text-muted:  oklch(62% 0.010 260);
+
+  /* ── Brand / accent ── */
+  --ap-accent:      oklch(42% 0.14 138);
+  --ap-accent-dim:  oklch(42% 0.14 138 / 0.12);
+
+  /* ── Status ── */
+  --ap-ok:          oklch(52% 0.15 142);
+  --ap-ok-dim:      oklch(52% 0.15 142 / 0.12);
+  --ap-warn:        oklch(72% 0.18 80);
+  --ap-warn-dim:    oklch(72% 0.18 80 / 0.12);
+  --ap-danger:      oklch(60% 0.22 25);
+  --ap-danger-dim:  oklch(60% 0.22 25 / 0.12);
+  --ap-info:        oklch(62% 0.17 220);
+  --ap-info-dim:    oklch(62% 0.17 220 / 0.12);
+  --ap-neutral:     oklch(62% 0 0);
+  --ap-neutral-dim: oklch(62% 0 0 / 0.12);
+
+  /* ── Layout ── */
+  --ap-sidebar-w:   240px;
+  --ap-header-h:    56px;
+  --ap-radius:      8px;
+  --ap-radius-sm:   4px;
+
+  /* ── Field use: minimum touch target (gloves, one hand) ── */
+  --ap-touch-min:   48px;
+
+  /* ── Aliases ── */
+  --scout-sidebar-width:   var(--ap-sidebar-w);
+  --scout-header-height:   var(--ap-header-h);
+  --scout-content-padding: 1.5rem;
+
+  /* ── PrimeNG overrides ── */
+  --p-primary-color:      var(--ap-accent);
+  --p-primary-color-text: oklch(99% 0 0);
+  --p-surface-ground:     var(--ap-bg);
+  --p-surface-card:       var(--ap-surface);
+  --p-surface-border:     var(--ap-border);
+  --p-text-color:         var(--ap-text);
+  --p-text-muted-color:   var(--ap-text-muted);
+  --p-border-radius:      var(--ap-radius);
+}
+
+/* Sun mode: high contrast for direct sunlight */
+:root[data-theme="sun"] {
+  --ap-bg:          oklch(100% 0 0);
+  --ap-surface:     oklch(100% 0 0);
+  --ap-border:      oklch(20% 0 0);
+  --ap-muted-bg:    oklch(94% 0 0);
+
+  --ap-text:        oklch(5% 0 0);
+  --ap-text-sec:    oklch(15% 0 0);
+  --ap-text-muted:  oklch(30% 0 0);
+
+  --ap-accent:      oklch(30% 0.12 138);
+  --ap-accent-dim:  oklch(30% 0.12 138 / 0.18);
+
+  --ap-ok:          oklch(38% 0.14 142);
+  --ap-warn:        oklch(55% 0.17 70);
+  --ap-danger:      oklch(45% 0.22 25);
+  --ap-info:        oklch(42% 0.17 240);
+
+  --ap-radius:      6px;
+}

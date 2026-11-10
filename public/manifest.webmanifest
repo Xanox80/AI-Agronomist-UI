@@ -1,0 +1,14 @@
+{
+  "name": "AP Scout",
+  "short_name": "AP Scout",
+  "description": "AI agronomist: crop disease and pest recognition",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#3a6b1c",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

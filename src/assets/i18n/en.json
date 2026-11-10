@@ -1,0 +1,16 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "error": "Something went wrong",
+    "offline": "No connection",
+    "language": "Language",
+    "theme": { "default": "Default theme", "sun": "Sun mode" }
+  }
+}

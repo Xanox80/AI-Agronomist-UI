@@ -1,0 +1,33 @@
+{
+  "heatmap": {
+    "title": "Problem heatmap",
+    "reset": "Reset filters",
+    "filters": {
+      "field": "Field",
+      "crop": "Crop",
+      "diagnosis": "Diagnosis",
+      "season": "Season",
+      "from": "Date from",
+      "to": "Date to",
+      "any": "All"
+    },
+    "export": {
+      "csv": "Export CSV",
+      "geojson": "Export GeoJSON"
+    },
+    "map": {
+      "label": "Heatmap of problems across fields"
+    },
+    "summary": {
+      "total": "Total observations",
+      "empty": "No observations match the selected filters",
+      "byWeek": "By week"
+    },
+    "error": {
+      "load": "Could not load map data",
+      "export": "Export failed",
+      "lookups": "Could not load filter lists",
+      "range": "Date from must not be after date to"
+    }
+  }
+}

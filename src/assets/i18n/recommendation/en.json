@@ -1,0 +1,115 @@
+{
+  "recommendation": {
+    "title": "Recommendation",
+    "status": {
+      "draft": "Draft",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "action": {
+      "observe": "Monitor",
+      "threshold": "Economic threshold reached",
+      "treat": "Treat",
+      "urgent": "Urgent action"
+    },
+    "autoApproved": "Auto-approved",
+    "approvedAt": "Approved",
+    "approve": "Approve",
+    "reject": "Reject",
+    "rejectReason": "Rejection reason",
+    "recompute": "Refresh weather and stock",
+    "stale": "The crop protection directory has not been verified for a long time. Check products, rates and label limits against the State Register of Pesticides and Agrochemicals.",
+    "disclaimer": "This is decision support, not an order. The final treatment decision is made by a person (the agronomist).",
+    "products": {
+      "title": "Products",
+      "empty": "No suitable products found",
+      "excludedTitle": "Excluded products",
+      "excluded": "Excluded",
+      "inStock": "In stock",
+      "outOfStock": "Out of stock",
+      "rate": "Application rate",
+      "timing": "Application timing",
+      "bbch": "BBCH window",
+      "phi": "Pre-harvest interval (PHI)",
+      "days": "d",
+      "resistance": "Resistance group",
+      "rotationRisk": "Resistance risk",
+      "stock": "Stock",
+      "cost": "Cost",
+      "uahPerHa": "UAH/ha",
+      "source": "Source",
+      "notVerified": "verification date unknown",
+      "demo": "Demo data: verify against the State Register before use."
+    },
+    "source": {
+      "registry": "State Register",
+      "internal_tech_card": "Farm technology card",
+      "demo_seed": "Demo directory"
+    },
+    "weather": {
+      "title": "72-hour weather window",
+      "timeline": "Hourly spraying suitability",
+      "verdict": {
+        "go": "Can spray",
+        "wait": "Wait",
+        "no_go": "Cannot spray"
+      },
+      "window": {
+        "go": "Conditions are suitable for spraying",
+        "wait": "Wait: conditions are not fully suitable now",
+        "no_go": "Spraying is not possible now",
+        "no_data": "No weather forecast data"
+      },
+      "cause": {
+        "wind_high": "strong wind",
+        "temp_low": "temperature too low",
+        "temp_high": "temperature too high",
+        "rain_now": "precipitation",
+        "rain_expected": "rain expected",
+        "gust_high": "strong wind gusts",
+        "humidity_low": "humidity too low",
+        "humidity_high": "humidity too high"
+      }
+    },
+    "safety": {
+      "title": "Safety warnings",
+      "severity": {
+        "info": "Info",
+        "warning": "Warning",
+        "critical": "Critical"
+      },
+      "consult_expert": "Consult an expert",
+      "quarantine_report": "Quarantine pest: report to the plant quarantine service",
+      "weather_location_missing": "No coordinates: weather window not calculated",
+      "weather_unavailable": "Weather forecast unavailable",
+      "water_buffer": "{{productName}}: water protection zone {{zoneM}} m",
+      "apiary_buffer": "{{productName}}: distance to apiary {{zoneM}} m",
+      "settlement_buffer": "{{productName}}: distance to settlement {{zoneM}} m",
+      "pollinator_hazard": "{{productName}}: hazardous to pollinators ({{hazard}}), do not spray during bee flight"
+    },
+    "sources": {
+      "title": "Sources",
+      "catalogVersion": "Directory version"
+    },
+    "reason": {
+      "rotation_group_used": "Resistance group {{system}} {{group}} was already used this season: {{used}} of {{max}}",
+      "max_applications": "Seasonal application limit for this product reached: {{used}} of {{max}}",
+      "substance_max_applications": "Seasonal application limit for active substance {{substance}} reached: {{used}} of {{max}}",
+      "bbch_window": "BBCH {{bbch}} is outside the application window {{from}}-{{to}}",
+      "incompatible_product": "Incompatible with a product already in the tank mix",
+      "min_interval": "{{daysSince}} days since the last treatment, minimum interval is {{minDays}} days",
+      "pre_harvest_interval": "Pre-harvest interval is {{intervalDays}} days, harvest is in {{daysToHarvest}} days",
+      "rotation_limit": "Rotation limit: group {{system}} {{group}} used {{used}} of {{max}} times",
+      "max_items_exceeded": "Outside the top {{max}} products"
+    },
+    "damage": {
+      "label": "Damage, % of leaf area or plants",
+      "hint": "Enter the measured damage to compare it with the damage threshold"
+    },
+    "createTask": "Create task",
+    "taskTitle": {
+      "treatment": "Treatment",
+      "reinspection": "Re-inspection"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "title": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "invalidCredentials": "Incorrect email or password",
+    "tooManyAttempts": "Too many sign-in attempts. Try again later"
+  }
+}

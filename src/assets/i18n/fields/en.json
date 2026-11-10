@@ -1,0 +1,72 @@
+{
+  "fields": {
+    "title": "Fields",
+    "unit": {
+      "ha": "ha"
+    },
+    "list": {
+      "searchPlaceholder": "Search fields by name",
+      "search": "Search",
+      "add": "New field",
+      "import": "Import contours",
+      "empty": "No fields yet. Add a field or import contours.",
+      "cropFilter": "Crop",
+      "locate": "Find by GPS",
+      "locateNone": "No field found at your position, choose one from the list.",
+      "loadMore": "Load more"
+    },
+    "detail": {
+      "edit": "Edit",
+      "source": "Contour source",
+      "deleteConfirm": "Delete this field?"
+    },
+    "source": {
+      "manual": "Manual",
+      "drawn": "Drawn on the map",
+      "import_kml": "KML import",
+      "import_geojson": "GeoJSON import",
+      "import_shp": "Shapefile import"
+    },
+    "history": {
+      "title": "Scouting history",
+      "empty": "No observations on this field yet.",
+      "status": {
+        "draft": "Draft",
+        "pending_sync": "Pending sync",
+        "synced": "Synced",
+        "diagnosed": "Diagnosed",
+        "confirmed": "Confirmed"
+      }
+    },
+    "form": {
+      "createTitle": "New field",
+      "editTitle": "Edit field",
+      "name": "Field name",
+      "crop": "Crop",
+      "variety": "Variety or hybrid",
+      "sowingDate": "Sowing date",
+      "area": "Area",
+      "nearWater": "Water body nearby (water protection zone)",
+      "nearApiary": "Apiary nearby",
+      "nearSettlement": "Settlement nearby",
+      "drawContour": "Draw contour",
+      "saveFailed": "Could not save the field",
+      "areaFromContour": "Area is calculated from the contour"
+    },
+    "map": {
+      "label": "Field map",
+      "drawHint": "Tap the map to place contour vertices (at least 3).",
+      "undo": "Undo point",
+      "clear": "Clear",
+      "finish": "Finish contour"
+    },
+    "import": {
+      "title": "Import field contours",
+      "hint": "KML, GeoJSON and Shapefile (ZIP) files are supported. A preview is shown first.",
+      "found": "Fields found: {{count}}",
+      "skipped": "Feature {{index}} skipped",
+      "confirm": "Import",
+      "failed": "Could not process the file"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "offline": {
+    "status": {
+      "title": "Synchronisation",
+      "pending": "Waiting to be sent: {{count}}",
+      "allSent": "Everything is sent",
+      "lastSync": "Last sync: {{time}}",
+      "never": "Not synchronised yet",
+      "syncNow": "Sync now",
+      "syncing": "Syncing...",
+      "offline": "No connection. Data is saved on the device and will be sent once the network is back.",
+      "error": "Sync error: {{code}}. Will retry automatically."
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "tasks": {
+    "title": "Завдання",
+    "syncBadge": "Очікує синхронізації",
+    "type": { "treatment": "Обробка", "reinspection": "Повторне обстеження", "sampling": "Відбір проб" },
+    "status": { "open": "Відкрито", "in_progress": "Виконується", "done": "Виконано", "cancelled": "Скасовано" },
+    "priority": { "low": "Низький", "normal": "Звичайний", "high": "Високий", "urgent": "Терміновий" },
+    "transition": { "open": "Відновити", "in_progress": "Почати", "done": "Завершити", "cancelled": "Скасувати" },
+    "view": { "list": "Список", "board": "Дошка" },
+    "filter": { "status": "Статус", "field": "Поле", "assignee": "Виконавець", "priority": "Пріоритет" },
+    "list": { "add": "Нове завдання", "empty": "Завдань немає" },
+    "form": {
+      "createTitle": "Нове завдання",
+      "editTitle": "Редагування завдання",
+      "type": "Тип",
+      "title": "Назва",
+      "field": "Поле",
+      "priority": "Пріоритет",
+      "assignee": "Виконавець",
+      "deadline": "Термін виконання",
+      "notes": "Нотатки"
+    },
+    "detail": {
+      "edit": "Редагувати",
+      "diagnosis": "Діагноз",
+      "recommendation": "Рекомендація",
+      "openRecommendation": "Відкрити рекомендацію",
+      "photos": "Фото",
+      "photoAlt": "Фото з огляду поля",
+      "mapPin": "Місце на карті",
+      "completedAt": "Завершено"
+    },
+    "complete": {
+      "title": "Запис обробки",
+      "product": "Препарат",
+      "dose": "Норма внесення",
+      "unit": "Одиниця",
+      "area": "Оброблена площа, га",
+      "date": "Дата обробки",
+      "submit": "Завершити завдання"
+    }
+  }
+}
