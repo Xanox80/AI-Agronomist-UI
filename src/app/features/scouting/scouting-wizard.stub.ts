@@ -1,12 +1,24 @@
 import { signal } from '@angular/core';
+import { SCOUTING_STEPS, ScoutingStep } from './scouting-steps';
+import { SavedOutcome } from './scouting-wizard.service';
 import { CapturedPhoto, ScoutingOrgan } from './scouting.types';
 
 /** Test double with the signals and methods the wizard templates read; override per test. */
 export function createWizardStub() {
   return {
     start: vi.fn().mockResolvedValue(undefined),
+    steps: signal<readonly ScoutingStep[]>(SCOUTING_STEPS),
+    stepCount: signal(SCOUTING_STEPS.length),
     step: signal(0),
     currentStep: signal('field'),
+    loading: signal(false),
+    online: signal(true),
+    extendedObservationId: signal<string | undefined>(undefined),
+    savedOutcome: signal<SavedOutcome | null>(null),
+    blockedHintKey: signal<string | null>(null),
+    hasUnsavedWork: signal(false),
+    checkingPhoto: signal(false),
+    photoLimitReached: signal(false),
     isQuickCapture: signal(false),
     isLastStep: signal(false),
     canAdvance: signal(true),
@@ -35,6 +47,8 @@ export function createWizardStub() {
     selectField: vi.fn(),
     selectCrop: vi.fn(),
     removePhoto: vi.fn(),
+    chooseOrgan: vi.fn(),
+    scoutAgain: vi.fn(),
     beginPhotoCapture: vi.fn(),
     receivePhoto: vi.fn().mockResolvedValue(undefined),
     recordVoice: vi.fn(),

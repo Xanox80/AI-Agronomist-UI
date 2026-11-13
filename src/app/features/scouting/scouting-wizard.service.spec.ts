@@ -25,6 +25,7 @@ const photo = (clientId: string): CapturedPhoto => ({
 describe('ScoutingWizard', () => {
   const context = {
     loadFields: vi.fn(), loadCrops: vi.fn(), suggestFieldId: vi.fn(), rememberedCropId: vi.fn(), loadBbchStages: vi.fn(),
+    loadPhotoCount: vi.fn(), rememberedOrgan: vi.fn(), rememberOrgan: vi.fn(),
   };
   const geolocation = { locate: vi.fn() };
   const photoCapture = { capture: vi.fn(), release: vi.fn() };
@@ -49,6 +50,8 @@ describe('ScoutingWizard', () => {
     context.loadBbchStages.mockResolvedValue([]);
     geolocation.locate.mockResolvedValue({ lat: 1, lng: 2, accuracyM: 3 });
     context.suggestFieldId.mockResolvedValue('f1');
+    context.rememberedOrgan.mockReturnValue(null);
+    context.loadPhotoCount.mockResolvedValue(1);
     submitter.submit.mockResolvedValue('obs-1');
     TestBed.configureTestingModule({
       providers: [
@@ -113,11 +116,12 @@ describe('ScoutingWizard', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/diagnosis', 'obs-1']);
   });
 
-  it('stays off the diagnosis page after an offline submit because the observation is only queued', async () => {
+  it('confirms an offline submit in place because the observation is only queued', async () => {
     online.set(false);
     wizard.organ.set('leaf');
     await wizard.submit();
-    expect(router.navigate).toHaveBeenCalledWith(['/home']);
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(wizard.savedOutcome()).toBe('queuedOffline');
   });
 
   it('does not take a GPS fix when the account turned geolocation off', async () => {
@@ -169,7 +173,8 @@ describe('ScoutingWizard', () => {
     wizard.organ.set('pest');
     await wizard.submit();
     expect(submitter.submit).toHaveBeenCalledWith(expect.objectContaining({ isQuickCapture: true }));
-    expect(router.navigate).toHaveBeenCalledWith(['/home']);
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(wizard.savedOutcome()).toBe('stored');
   });
 
   it('reports a failed submit and stays on the page', async () => {
@@ -178,5 +183,86 @@ describe('ScoutingWizard', () => {
     await wizard.submit();
     expect(wizard.submitFailed()).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('reports loading until the fields and the GPS fix are in', async () => {
+    const started = wizard.start();
+    expect(wizard.loading()).toBe(true);
+    await started;
+    expect(wizard.loading()).toBe(false);
+  });
+
+  it('preselects the object type of the last observation and remembers the submitted one', async () => {
+    context.rememberedOrgan.mockReturnValue('pest');
+    await wizard.start();
+    expect(wizard.organ()).toBe('pest');
+    wizard.organ.set('leaf');
+    await wizard.submit();
+    expect(context.rememberOrgan).toHaveBeenCalledWith('leaf');
+  });
+
+  it('moves on to the photos as soon as the object type is chosen', () => {
+    wizard.step.set(SCOUTING_STEPS.indexOf('object'));
+    wizard.chooseOrgan('stem');
+    expect(wizard.organ()).toBe('stem');
+    expect(wizard.currentStep()).toBe('photos');
+  });
+
+  it('explains why the photo step cannot be left yet', () => {
+    wizard.step.set(SCOUTING_STEPS.indexOf('photos'));
+    expect(wizard.blockedHintKey()).toBe('scouting.blocked.photos');
+    wizard.step.set(SCOUTING_STEPS.indexOf('note'));
+    expect(wizard.blockedHintKey()).toBeNull();
+  });
+
+  it('reports a photo quality check in progress', async () => {
+    let finish: (value: CapturedPhoto) => void = () => undefined;
+    photoCapture.capture.mockReturnValue(new Promise<CapturedPhoto>((resolve) => (finish = resolve)));
+    const adding = wizard.addPhoto(new Blob(['x']));
+    expect(wizard.checkingPhoto()).toBe(true);
+    finish(photo('a'));
+    await adding;
+    expect(wizard.checkingPhoto()).toBe(false);
+  });
+
+  it('flags unsaved photos until the observation is submitted', async () => {
+    photoCapture.capture.mockResolvedValueOnce(photo('a'));
+    expect(wizard.hasUnsavedWork()).toBe(false);
+    await wizard.addPhoto(new Blob(['x']));
+    expect(wizard.hasUnsavedWork()).toBe(true);
+    wizard.organ.set('leaf');
+    await wizard.submit();
+    expect(wizard.hasUnsavedWork()).toBe(false);
+  });
+
+  it('starts another observation on the same field after a saved one', async () => {
+    online.set(false);
+    photoCapture.capture.mockResolvedValueOnce(photo('a'));
+    await wizard.start();
+    await wizard.addPhoto(new Blob(['x']));
+    wizard.organ.set('leaf');
+    wizard.textNote.set('spots');
+    await wizard.submit();
+    wizard.scoutAgain();
+    expect(wizard.savedOutcome()).toBeNull();
+    expect(wizard.photos()).toEqual([]);
+    expect(wizard.textNote()).toBe('');
+    expect(wizard.fieldId()).toBe('f1');
+    expect(wizard.organ()).toBe('leaf');
+    expect(wizard.currentStep()).toBe('photos');
+    expect(photoCapture.release).toHaveBeenCalledWith(expect.objectContaining({ clientId: 'a' }));
+  });
+
+  it('shows only the photo step when adding photos to an existing observation', async () => {
+    window.history.replaceState(null, '', '/scouting?observationId=obs-9');
+    try {
+      await wizard.start();
+    } finally {
+      window.history.replaceState(null, '', '/');
+    }
+    expect(wizard.steps()).toEqual(['photos']);
+    expect(wizard.currentStep()).toBe('photos');
+    expect(wizard.isLastStep()).toBe(true);
+    expect(wizard.canAdvance()).toBe(false);
   });
 });

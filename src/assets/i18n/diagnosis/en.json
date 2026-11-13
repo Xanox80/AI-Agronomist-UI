@@ -8,21 +8,32 @@
     "pendingServer": "Pending server analysis. The observation is saved on the device; the diagnosis appears after sync.",
     "uncertain": {
       "title": "The system is not sure",
-      "body": "The case was sent to an expert phytopathologist. Add more photos from other angles to refine the diagnosis.",
-      "addPhotos": "Add photos"
+      "addPhotos": "Add photos",
+      "nextTitle": "What to do next:",
+      "stepPhotos": "Add 2–3 photos from other angles: the lesion close up and the whole plant.",
+      "stepCatalogue": "If you know the diagnosis, choose it below.",
+      "stepExpert": "The case was sent to an expert phytopathologist who will review the photos.",
+      "reason": {
+        "outOfDistribution": "The model did not recognise the crop or the damage in the photo. It does not know every crop and disease.",
+        "providerError": "The recognition service is temporarily unavailable.",
+        "needsMorePhotos": "There are too few photos for a confident diagnosis.",
+        "lowConfidence": "No diagnosis reached enough confidence."
+      }
     },
     "topHypotheses": "Most likely diagnoses",
     "references": "For comparison",
     "photoAlt": "Crop photo with the affected region highlighted",
     "questions": "Clarifying questions",
     "applyAnswers": "Refine diagnosis",
-    "answer": { "yes": "Yes", "no": "No", "unsure": "Not sure" },
+    "answer": {
+      "yes": "Yes",
+      "no": "No",
+      "unsure": "Not sure"
+    },
     "confirmTitle": "Confirm the diagnosis",
-    "confirmTop": "Confirm the most likely diagnosis",
-    "correctLabel": "Or correct the diagnosis",
+    "confirmTop": "Yes, it is {{name}}",
     "pickFromCatalogue": "Pick from the catalogue",
-    "confirmCorrection": "Confirm correction",
-    "confirmed": "Diagnosis confirmed",
+    "confirmed": "Thank you! Diagnosis confirmed",
     "createTask": "Create task",
     "pest": {
       "title": "Pest",
@@ -56,6 +67,33 @@
       "abiotic_stress": "Abiotic stress",
       "mechanical_damage": "Mechanical damage",
       "normal": "Normal"
-    }
+    },
+    "retry": "Try again",
+    "hierarchyLabel": "What was recognised",
+    "photoAltPlain": "Observation photo",
+    "regionHint": "The frame is the approximate affected area marked by the model.",
+    "confidenceHint": "The percentage is the model's confidence, not a lab result. Check the symptoms on the plant before treating.",
+    "referencesPending": "Reference photos for comparison have not been added to the catalogue yet.",
+    "level": {
+      "high": "High confidence",
+      "medium": "Medium confidence",
+      "low": "Low confidence"
+    },
+    "confirmedAs": "Thank you! Confirmed: {{name}}",
+    "catalogueEmpty": "The catalogue is unavailable. Check the connection.",
+    "createTaskHint": "Confirm the diagnosis first to create a task.",
+    "notThis": "Not this",
+    "notThisAria": "Not this — choose the correct diagnosis",
+    "correctionTitle": "Choose the correct diagnosis",
+    "pickTitle": "If you know the diagnosis, choose it",
+    "otherDiagnosis": "Another diagnosis…",
+    "catalogueLabel": "Diagnosis from the catalogue",
+    "confirmChoice": "Confirm choice",
+    "cancel": "Cancel",
+    "changeAnswer": "Change answer",
+    "trainingNote": "The photos were added to model training — future diagnoses will be more accurate.",
+    "openReference": "Open the photo larger: {{caption}}",
+    "yourPhoto": "Your photo",
+    "referencePhoto": "Photo for comparison"
   }
 }

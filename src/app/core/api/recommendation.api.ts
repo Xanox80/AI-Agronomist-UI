@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ApiClient } from './api-client';
 import {
   AutoApproveSettingDto, AutoApproveSettingInput, CreateRecommendationRequest, RecomputeRecommendationRequest,
-  RecommendationDto, RejectRecommendationRequest,
+  RecommendationDto, RejectRecommendationRequest, TreatmentPlanDto, TreatmentPlanRequest,
 } from './models';
 
 @Injectable({ providedIn: 'root' })
@@ -30,6 +30,10 @@ export class RecommendationApi extends ApiClient {
 
   recompute(id: string, body: RecomputeRecommendationRequest = {}): Observable<RecommendationDto> {
     return this.http.post<RecommendationDto>(this.url(`/recommendations/${id}/recompute`), body);
+  }
+
+  treatmentPlan(id: string, body: TreatmentPlanRequest = {}): Observable<TreatmentPlanDto> {
+    return this.http.post<TreatmentPlanDto>(this.url(`/recommendations/${id}/treatment-plan`), body);
   }
 
   autoApproveSettings(): Observable<AutoApproveSettingDto[]> {

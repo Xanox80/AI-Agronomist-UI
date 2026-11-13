@@ -10,13 +10,16 @@
       "title": "Field, crop and growth stage",
       "gpsFix": "GPS fixed (accuracy ~{{accuracy}} m)",
       "noGps": "GPS unavailable: pick the field from the list",
-      "suggested": "Field suggested from your location",
+      "suggested": "Field picked by GPS (accuracy ~{{accuracy}} m). Change it if this is the wrong field.",
       "field": "Field",
       "pick": "Select a field",
       "crop": "Crop",
       "pickCrop": "Select a crop",
       "bbch": "Growth stage (BBCH)",
-      "pickBbch": "Select a stage"
+      "pickBbch": "Select a stage",
+      "locating": "Finding your location…",
+      "noFields": "No fields found. You can continue without a field.",
+      "optional": "Field, crop and stage are optional: if you are not sure, just tap \"Next\"."
     },
     "object": {
       "title": "What are you photographing?",
@@ -25,7 +28,8 @@
       "stem": "Stem",
       "fruit": "Fruit / pod",
       "pest": "Pest",
-      "field": "General field view"
+      "field": "General field view",
+      "lead": "Recognition works best on a close-up of one affected leaf."
     },
     "hints": {
       "title": "How to shoot",
@@ -70,24 +74,23 @@
       "title": "Photos (1-{{max}})",
       "take": "Take a photo",
       "retake": "Retake",
-      "remove": "Remove",
+      "remove": "Remove photo {{n}}",
       "alt": "Photo {{n}}",
-      "scaleMarker": "A 5 cm scale card is in the photo"
+      "scaleMarker": "A 5 cm scale card is in the photo",
+      "takeMore": "Add another photo",
+      "checking": "Checking photo quality…",
+      "limitReached": "That is enough photos. Tap \"Next\"."
     },
     "angles": {
-      "1": "Photo 1: overview of the plant or the affected area.",
-      "2": "Photo 2: close-up with the lesion in the center.",
-      "3": "Photo 3: another angle, for example the underside of the leaf or a cross-section."
+      "1": "Photo 1: close-up of one affected leaf (or organ), lesion in the center filling most of the frame.",
+      "2": "Photo 2: another close-up of the damage, from another side or on another plant. 2-3 photos give a more accurate diagnosis.",
+      "3": "Photo 3: a different angle, for example the underside of the leaf or the whole plant."
     },
     "quality": {
-      "blurry": "The photo is blurry: wipe the lens, hold the phone still and wait for focus.",
-      "too_dark": "The photo is too dark: shoot in better light.",
-      "too_bright": "The photo is overexposed: avoid direct sun and glare.",
-      "no_plant": "Too little plant in the photo: move closer so the plant fills most of the frame.",
-      "too_small": "The object is too small in the frame: move closer.",
       "unassessed": "The photo quality could not be checked. Make sure it is sharp and well lit.",
       "unspecified": "The photo quality is not sufficient for an accurate diagnosis.",
-      "retake": "We recommend retaking the photo for a more accurate diagnosis."
+      "retake": "The diagnosis from this photo may be inaccurate. Tap \"Retake\" to shoot it again.",
+      "ok": "Good quality"
     },
     "note": {
       "title": "Note",
@@ -97,7 +100,35 @@
       "stop": "Stop recording",
       "recorded": "Voice note recorded ({{sec}} s)",
       "discard": "Discard voice note",
-      "micDenied": "Microphone access is denied. Allow it in the browser settings."
+      "micDenied": "Microphone access is denied. Allow it in the browser settings.",
+      "optional": "Optional. Voice is faster when you wear gloves."
+    },
+    "saveOffline": "Save draft",
+    "addPhotos": "Add photos to the diagnosis",
+    "offlineDraft": "No connection. The observation will be saved on the phone and sent and analysed automatically once you are back online.",
+    "sending": "Sending photos… This can take up to a minute, keep the app open.",
+    "leaveConfirm": "The photos and note are not saved yet. Leave and discard them?",
+    "steps": {
+      "field": "Field",
+      "object": "Object",
+      "photos": "Photos",
+      "note": "Note"
+    },
+    "blocked": {
+      "object": "Choose what you are photographing to continue.",
+      "photos": "Take at least one photo to continue."
+    },
+    "saved": {
+      "stored": {
+        "title": "Observation saved",
+        "text": "It is sent to the server automatically."
+      },
+      "queuedOffline": {
+        "title": "Saved on the phone",
+        "text": "There is no connection right now. The photos will be sent automatically once you are back online, and the diagnosis will be ready then. You can close the app."
+      },
+      "again": "Another observation on this field",
+      "home": "Go to home"
     }
   }
 }

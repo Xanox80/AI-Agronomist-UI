@@ -1,6 +1,10 @@
 {
   "home": {
     "title": "Home",
+    "greeting": "Hello, {{name}}",
+    "openExpertQueue": "Open the expert queue",
+    "tasksFailed": "Could not load tasks. Check the connection.",
+    "allTasks": "All tasks",
     "newScouting": "New scouting",
     "syncStatus": "Sync status",
     "online": "Online",

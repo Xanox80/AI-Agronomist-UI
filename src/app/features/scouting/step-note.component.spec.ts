@@ -40,4 +40,20 @@ describe('StepNoteComponent', () => {
     expect(text).toContain('scouting.note.micDenied');
     expect(text).toContain('scouting.submitFailed');
   });
+
+  it('says nothing about drafts while online', () => {
+    expect(render().textContent).not.toContain('scouting.offlineDraft');
+  });
+
+  it('explains offline that the observation is kept as a draft until sync', () => {
+    const wizard = createWizardStub();
+    wizard.online.set(false);
+    expect(render(wizard).textContent).toContain('scouting.offlineDraft');
+  });
+
+  it('tells the scout to wait while the photos are being sent', () => {
+    const wizard = createWizardStub();
+    wizard.submitting.set(true);
+    expect(render(wizard).textContent).toContain('scouting.sending');
+  });
 });

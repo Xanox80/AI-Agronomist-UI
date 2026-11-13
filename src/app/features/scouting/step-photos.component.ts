@@ -14,59 +14,99 @@ import { SCOUTING_CONFIG } from './scouting.config';
   template: `
     <div class="step">
       <h2>{{ 'scouting.photos.title' | translate: { max: maxPhotos } }}</h2>
-      <p-message severity="info" size="small">{{ nextAngleKey() | translate }}</p-message>
-      <ul class="hints">
-        @for (key of hintKeys(); track key) {
-          <li>{{ key | translate }}</li>
-        }
-      </ul>
-
-      <input #camera type="file" accept="image/*" capture="environment" hidden (change)="onFile($event)" />
-      <p-button
-        [label]="'scouting.photos.take' | translate" icon="pi pi-camera" size="large" fluid
-        [disabled]="!wizard.canAddPhoto()" (onClick)="takePhoto(camera)"
-      />
-
-      <div class="photo-list">
-        @for (photo of wizard.photos(); track photo.clientId; let index = $index) {
-          <article class="photo-card">
-            <img [src]="photo.previewUrl" [alt]="'scouting.photos.alt' | translate: { n: index + 1 }" />
-            @for (issue of photo.issues; track issue) {
-              <p-message severity="warn" size="small">{{ issue | translate }}</p-message>
-            }
-            @if (photo.issues.length) {
-              <p class="retake-prompt">{{ 'scouting.quality.retake' | translate }}</p>
-            }
-            <div class="photo-actions">
-              <p-button
-                [label]="'scouting.photos.retake' | translate" icon="pi pi-refresh" severity="secondary"
-                (onClick)="retake(photo.clientId, camera)"
-              />
-              <p-button
-                [label]="'scouting.photos.remove' | translate" icon="pi pi-trash" severity="danger" text
-                (onClick)="wizard.removePhoto(photo.clientId)"
-              />
-            </div>
-          </article>
+      <div aria-live="polite">
+        @if (wizard.photoLimitReached()) {
+          <p-message severity="success" size="small" icon="pi pi-check">
+            {{ 'scouting.photos.limitReached' | translate }}
+          </p-message>
+        } @else {
+          <p-message severity="info" size="small" icon="pi pi-camera">{{ nextAngleKey() | translate }}</p-message>
         }
       </div>
 
-      <label class="scale-toggle">
-        <p-toggleswitch [ngModel]="wizard.scaleMarkerUsed()" (ngModelChange)="wizard.scaleMarkerUsed.set($event)" />
-        <span>{{ 'scouting.photos.scaleMarker' | translate }}</span>
-      </label>
+      <input #camera type="file" accept="image/*" capture="environment" hidden (change)="onFile($event)" />
+      <p-button
+        [label]="takeLabelKey() | translate" icon="pi pi-camera" size="large" fluid
+        [loading]="wizard.checkingPhoto()" [disabled]="!wizard.canAddPhoto() || wizard.checkingPhoto()"
+        (onClick)="takePhoto(camera)"
+      />
+      @if (wizard.checkingPhoto()) {
+        <p class="checking" role="status">{{ 'scouting.photos.checking' | translate }}</p>
+      }
+
+      <ul class="photo-list">
+        @for (photo of wizard.photos(); track photo.clientId; let index = $index) {
+          <li class="photo-card" [class.needs-retake]="photo.issues.length">
+            <img [src]="photo.previewUrl" [alt]="'scouting.photos.alt' | translate: { n: index + 1 }" />
+            <div class="photo-body">
+              <strong>{{ 'scouting.photos.alt' | translate: { n: index + 1 } }}</strong>
+              @if (photo.issues.length) {
+                @for (issue of photo.issues; track issue) {
+                  <p class="issue"><i class="pi pi-exclamation-triangle" aria-hidden="true"></i> {{ issue | translate }}</p>
+                }
+                <p class="retake-prompt">{{ 'scouting.quality.retake' | translate }}</p>
+              } @else {
+                <p class="quality-ok"><i class="pi pi-check-circle" aria-hidden="true"></i> {{ 'scouting.quality.ok' | translate }}</p>
+              }
+              <div class="photo-actions">
+                <p-button
+                  [label]="'scouting.photos.retake' | translate" icon="pi pi-refresh"
+                  [severity]="photo.issues.length ? 'primary' : 'secondary'" [disabled]="wizard.checkingPhoto()"
+                  (onClick)="retake(photo.clientId, camera)"
+                />
+                <p-button
+                  icon="pi pi-trash" severity="danger" text
+                  [ariaLabel]="'scouting.photos.remove' | translate: { n: index + 1 }"
+                  (onClick)="wizard.removePhoto(photo.clientId)"
+                />
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+
+      @if (hintKeys().length) {
+        <details class="hints" [open]="wizard.photos().length === 0">
+          <summary>{{ 'scouting.hints.title' | translate }}</summary>
+          <ul>
+            @for (key of hintKeys(); track key) {
+              <li>{{ key | translate }}</li>
+            }
+          </ul>
+        </details>
+      }
+
+      <div class="scale-toggle">
+        <p-toggleswitch
+          inputId="scout-scale" [ngModel]="wizard.scaleMarkerUsed()" (ngModelChange)="wizard.scaleMarkerUsed.set($event)"
+        />
+        <label for="scout-scale">{{ 'scouting.photos.scaleMarker' | translate }}</label>
+      </div>
     </div>
   `,
   styles: `
-    .hints { margin: 0.75rem 0; padding-left: 1.25rem; color: var(--ap-text-sec); }
-    .photo-list { display: grid; gap: 0.75rem; margin: 1rem 0; }
+    .step { display: grid; gap: 0.75rem; }
+    .step h2 { margin: 0; }
+    .checking { margin: 0; color: var(--ap-text-sec); text-align: center; }
+    .photo-list { display: grid; gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
     .photo-card {
-      display: grid; gap: 0.5rem; padding: 0.75rem;
-      background: var(--ap-surface); border: 1px solid var(--ap-border); border-radius: var(--ap-radius);
+      display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.75rem; padding: 0.75rem;
+      background: var(--ap-surface); border: 2px solid var(--ap-border); border-radius: var(--ap-radius);
     }
-    .photo-card img { width: 100%; max-height: 16rem; object-fit: contain; border-radius: var(--ap-radius-sm); }
-    .retake-prompt { margin: 0; color: var(--ap-warn); font-weight: 600; }
-    .photo-actions { display: flex; gap: 0.5rem; }
+    .photo-card.needs-retake { border-color: var(--ap-warn); }
+    .photo-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--ap-radius-sm); }
+    .photo-body { display: grid; gap: 0.375rem; align-content: start; min-width: 0; }
+    .photo-body p { margin: 0; }
+    .issue { color: var(--ap-text); }
+    .issue .pi { color: var(--ap-warn); }
+    .retake-prompt { color: var(--ap-text-sec); font-size: 0.9rem; }
+    .quality-ok { color: var(--ap-accent); font-weight: 600; }
+    .photo-actions { display: flex; gap: 0.5rem; justify-content: space-between; }
+    .hints { padding: 0.75rem 1rem; background: var(--ap-info-dim); border-radius: var(--ap-radius); }
+    .hints summary {
+      display: flex; align-items: center; min-height: var(--ap-touch-min); font-weight: 600; cursor: pointer;
+    }
+    .hints ul { margin: 0; padding-left: 1.25rem; display: grid; gap: 0.375rem; }
     .scale-toggle { display: flex; align-items: center; gap: 0.75rem; min-height: var(--ap-touch-min); }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -80,6 +120,9 @@ export class StepPhotosComponent {
   });
   protected readonly nextAngleKey = computed(() =>
     angleKeyFor(Math.min(this.wizard.photos().length + 1, SCOUTING_CONFIG.maxPhotos)),
+  );
+  protected readonly takeLabelKey = computed(() =>
+    this.wizard.photos().length ? 'scouting.photos.takeMore' : 'scouting.photos.take',
   );
 
   protected takePhoto(input: HTMLInputElement): void {

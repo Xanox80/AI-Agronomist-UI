@@ -8,7 +8,7 @@
   /* ── Text ── */
   --ap-text:        oklch(20% 0.02 260);
   --ap-text-sec:    oklch(45% 0.015 260);
-  --ap-text-muted:  oklch(62% 0.010 260);
+  --ap-text-muted:  oklch(52% 0.010 260); /* >= 4.5:1 on white (WCAG AA) */
 
   /* ── Brand / accent ── */
   --ap-accent:      oklch(42% 0.14 138);
@@ -34,6 +34,12 @@
 
   /* ── Field use: minimum touch target (gloves, one hand) ── */
   --ap-touch-min:   48px;
+  --ap-touch-primary: 64px; /* the screen's main action, e.g. start scouting */
+
+  /* ── Keyboard focus ── */
+  --ap-focus-ring:  oklch(48% 0.17 250);
+  --ap-focus-width: 3px;
+  --ap-focus-offset: 2px;
 
   /* ── Aliases ── */
   --scout-sidebar-width:   var(--ap-sidebar-w);
@@ -69,6 +75,8 @@
   --ap-warn:        oklch(55% 0.17 70);
   --ap-danger:      oklch(45% 0.22 25);
   --ap-info:        oklch(42% 0.17 240);
+
+  --ap-focus-ring:  oklch(5% 0 0);
 
   --ap-radius:      6px;
 }

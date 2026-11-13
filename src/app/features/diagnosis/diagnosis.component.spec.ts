@@ -28,9 +28,11 @@ describe('DiagnosisComponent', () => {
     fixture.detectChanges();
   }
 
-  async function renderFixture(snapshot: DiagnosisSnapshot) {
+  async function renderFixture(snapshot: DiagnosisSnapshot, failFirstLoad = false) {
+    const load = vi.fn(() => Promise.resolve(snapshot));
+    if (failFirstLoad) load.mockRejectedValueOnce(new Error('x'));
     service = {
-      load: vi.fn(() => Promise.resolve(snapshot)),
+      load,
       referenceData: vi.fn(() => Promise.resolve({ catalogue: [], crops: [] })),
       answer: vi.fn(),
       confirm: vi.fn(),
@@ -57,6 +59,46 @@ describe('DiagnosisComponent', () => {
     expect(root.querySelector('[data-testid=pending]')).not.toBeNull();
   });
 
+  it('offers a retry after a load failure and reloads', async () => {
+    const fixture = await renderFixture({ observation, diagnosis: baseResult }, true);
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('[data-testid=failed]')).not.toBeNull();
+    root.querySelector<HTMLButtonElement>('p-button.diag__retry button')!.click();
+    await settle(fixture);
+    expect(root.querySelector('[data-testid=failed]')).toBeNull();
+    expect(root.querySelectorAll('app-hypothesis-card')).toHaveLength(1);
+  });
+
+  it('leaves unknown organ and category out of the hierarchy', async () => {
+    const root = await render({
+      observation, diagnosis: { ...baseResult, organ: 'unknown', problemCategory: 'unknown' } as unknown as DiagnosisResultDto,
+    });
+    expect(root.querySelector('[data-testid=hierarchy]')?.textContent).not.toContain('unknown');
+    expect(root.querySelector('[data-testid=hierarchy]')?.textContent).toContain('Іржа');
+  });
+
+  it('explains model confidence and shows an evidence line shared by all hypotheses once', async () => {
+    const evidence = 'local model';
+    const hypotheses = [
+      { ...baseResult.hypotheses[0], evidence },
+      { rank: 2, diagnosisId: 'd2', diagnosisCode: 'mildew', nameUk: 'Борошниста роса', nameEn: 'Mildew', probability: 0.2, evidence },
+    ];
+    const root = await render({ observation, diagnosis: { ...baseResult, hypotheses } });
+    expect(root.querySelector('[data-testid=confidence-hint]')).not.toBeNull();
+    expect(root.querySelector('[data-testid=shared-evidence]')?.textContent).toContain(evidence);
+    expect(root.querySelectorAll('.card__evidence')).toHaveLength(0);
+  });
+
+  it('hints at the region only when the model marked one', async () => {
+    const photos = [{ seq: 1, url: '/p.jpg' }];
+    const withPhoto = { ...observation, photos } as unknown as ObservationDto;
+    expect((await render({ observation: withPhoto, diagnosis: baseResult })).querySelector('[data-testid=region-hint]')).toBeNull();
+    TestBed.resetTestingModule();
+    const region = { x: 0, y: 0, w: 0.5, h: 0.5, photoSeq: 1 };
+    const marked = { ...baseResult, hypotheses: [{ ...baseResult.hypotheses[0], region }] };
+    expect((await render({ observation: withPhoto, diagnosis: marked })).querySelector('[data-testid=region-hint]')).not.toBeNull();
+  });
+
   it('renders the hierarchy and the hypothesis cards', async () => {
     const root = await render({ observation, diagnosis: baseResult });
     expect(root.querySelector('[data-testid=hierarchy]')?.textContent).toContain('diagnosis.organ.leaf');
@@ -69,10 +111,17 @@ describe('DiagnosisComponent', () => {
     expect(root.querySelector('[data-testid=uncertain]')).not.toBeNull();
   });
 
+  it('tells the scout the crop was not recognised for an out-of-distribution result', async () => {
+    const root = await render({ observation, diagnosis: { ...baseResult, unsure: true, outOfDistribution: true, hypotheses: [] } });
+    expect(root.querySelector('[data-testid=uncertain-reason]')?.textContent).toContain('diagnosis.uncertain.reason.outOfDistribution');
+    expect(root.querySelector('h2')?.textContent).not.toContain('diagnosis.topHypotheses');
+  });
+
   it('does not rank or offer a one-click confirmation in not-sure mode', async () => {
     const root = await render({ observation, diagnosis: { ...baseResult, unsure: true } });
     expect(root.querySelector('app-hypothesis-card')).toBeNull();
-    expect(root.querySelector('app-diagnosis-confirm p-button')?.textContent ?? '').not.toContain('confirmTop');
+    expect(root.querySelector('[data-testid=confirm-top]')).toBeNull();
+    expect(root.querySelector('app-diagnosis-choice')).not.toBeNull();
   });
 
   it('links the uncertain banner to the scouting flow for the observation', async () => {
@@ -137,8 +186,31 @@ describe('DiagnosisComponent', () => {
     expect(navigate).toHaveBeenCalledWith(['/recommendation', 'o1']);
   });
 
-  it('disables Create task before confirmation', async () => {
+  it('disables Create task before confirmation and says why', async () => {
     const root = await render({ observation, diagnosis: baseResult });
     expect(root.querySelector<HTMLButtonElement>('p-button.diag__task button')!.disabled).toBe(true);
+    expect(root.querySelector('[data-testid=task-hint]')).not.toBeNull();
+  });
+
+  it('sends a "Not this" pick of another hypothesis as a correction and shows the training thank-you', async () => {
+    const twoHypotheses: DiagnosisResultDto = {
+      ...baseResult,
+      hypotheses: [...baseResult.hypotheses,
+        { rank: 2, diagnosisId: 'd2', diagnosisCode: 'septoria', nameUk: 'Септоріоз', nameEn: 'Septoria', probability: 0.2, evidence: '' }],
+    };
+    const fixture = await renderFixture({ observation, diagnosis: twoHypotheses });
+    const root = fixture.nativeElement as HTMLElement;
+    service['confirm'].mockResolvedValue({ ...observation, confirmedDiagnosisId: 'd2' });
+    const click = (selector: string) => {
+      root.querySelector<HTMLButtonElement>(selector)!.click();
+      fixture.detectChanges();
+    };
+    click('[data-testid=not-this] button');
+    click('[data-testid=choice-option]');
+    click('[data-testid=choice-confirm] button');
+    await settle(fixture);
+    expect(service['confirm']).toHaveBeenCalledWith('o1', 'd2', true);
+    expect(root.querySelector('[role=status] [data-testid=training-note]')).not.toBeNull();
   });
 });
+

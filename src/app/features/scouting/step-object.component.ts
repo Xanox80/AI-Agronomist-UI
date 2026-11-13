@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { hintKeysFor, OBJECT_TYPES } from './object-types';
+import { OBJECT_TYPES } from './object-types';
 import { ScoutingWizard } from './scouting-wizard.service';
 
 @Component({
@@ -8,48 +8,38 @@ import { ScoutingWizard } from './scouting-wizard.service';
   imports: [TranslatePipe],
   template: `
     <div class="step">
-      <h2>{{ 'scouting.object.title' | translate }}</h2>
-      <div class="object-grid" role="radiogroup" [attr.aria-label]="'scouting.object.title' | translate">
+      <h2 id="scout-object-title">{{ 'scouting.object.title' | translate }}</h2>
+      <p class="lead">{{ 'scouting.object.lead' | translate }}</p>
+      <div class="object-grid" role="radiogroup" aria-labelledby="scout-object-title">
         @for (organ of objectTypes; track organ) {
           <button
             type="button" role="radio" class="object-option" [class.selected]="wizard.organ() === organ"
-            [attr.aria-checked]="wizard.organ() === organ" (click)="wizard.organ.set(organ)"
+            [attr.aria-checked]="wizard.organ() === organ" (click)="wizard.chooseOrgan(organ)"
           >
+            @if (wizard.organ() === organ) {
+              <i class="pi pi-check" aria-hidden="true"></i>
+            }
             {{ 'scouting.object.' + organ | translate }}
           </button>
         }
       </div>
-      @if (hintKeys().length) {
-        <section class="hints" aria-live="polite">
-          <h3>{{ 'scouting.hints.title' | translate }}</h3>
-          <ul>
-            @for (key of hintKeys(); track key) {
-              <li>{{ key | translate }}</li>
-            }
-          </ul>
-        </section>
-      }
     </div>
   `,
   styles: `
+    .lead { margin: 0 0 1rem; color: var(--ap-text-sec); }
     .object-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
     .object-option {
-      min-height: var(--ap-touch-min); padding: 0.75rem; font-size: 1rem; cursor: pointer;
-      background: var(--ap-surface); color: var(--ap-text);
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      min-height: calc(var(--ap-touch-min) * 1.5); padding: 0.75rem; font-size: 1.05rem; font-weight: 600;
+      cursor: pointer; background: var(--ap-surface); color: var(--ap-text);
       border: 2px solid var(--ap-border); border-radius: var(--ap-radius);
     }
     .object-option.selected { border-color: var(--ap-accent); background: var(--ap-accent-dim); }
-    .hints { margin-top: 1rem; padding: 0.75rem 1rem; background: var(--ap-info-dim); border-radius: var(--ap-radius); }
-    .hints h3 { margin: 0 0 0.5rem; font-size: 1rem; }
-    .hints ul { margin: 0; padding-left: 1.25rem; }
+    .object-option:focus-visible { outline: 3px solid var(--ap-accent); outline-offset: 2px; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepObjectComponent {
   protected readonly wizard = inject(ScoutingWizard);
   protected readonly objectTypes = OBJECT_TYPES;
-  protected readonly hintKeys = computed(() => {
-    const organ = this.wizard.organ();
-    return organ ? hintKeysFor(organ) : [];
-  });
 }

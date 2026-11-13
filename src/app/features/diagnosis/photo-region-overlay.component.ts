@@ -14,7 +14,10 @@ import { regionStyle } from './diagnosis-view';
       }
     </div>`,
   styles: `
-    .overlay { position: relative; display: block; width: 100%; border-radius: var(--ap-radius); overflow: hidden; }
+    :host { --photo-max-height: min(420px, 55vh); display: flex; justify-content: center; }
+    .overlay { position: relative; display: block; width: fit-content; max-width: 100%; border-radius: var(--ap-radius); overflow: hidden; }
+    /* The wrapper hugs the image so the region box (percent of the wrapper) stays on the photo. */
+    .overlay ::ng-deep img { width: auto; max-width: 100%; max-height: var(--photo-max-height); }
     .overlay__box { position: absolute; border: 3px solid var(--ap-danger); background: var(--ap-danger-dim); box-sizing: border-box; }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

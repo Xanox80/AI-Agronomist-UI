@@ -87,4 +87,12 @@ describe('ScoutingContextService', () => {
   it('counts the photos an observation already has', async () => {
     expect(await service.loadPhotoCount('o1')).toBe(2);
   });
+
+  it('remembers the last object type and ignores an unknown stored value', () => {
+    expect(service.rememberedOrgan()).toBeNull();
+    service.rememberOrgan('pest');
+    expect(service.rememberedOrgan()).toBe('pest');
+    localStorage.setItem('ap-scout.scouting.organ-memory', JSON.stringify('root'));
+    expect(service.rememberedOrgan()).toBeNull();
+  });
 });

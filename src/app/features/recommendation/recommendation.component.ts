@@ -13,13 +13,14 @@ import { taskQueryParams, taskTypeFor } from './recommendation-task';
 import { actionSeverity, isReasonMissing, statusSeverity } from './recommendation-display';
 import { RecommendationService } from './recommendation.service';
 import { SafetyWarningsComponent } from './safety-warnings.component';
+import { TreatmentPlanComponent } from './treatment-plan.component';
 import { WeatherWindowComponent } from './weather-window.component';
 
 @Component({
   selector: 'app-recommendation',
   imports: [
     FormsModule, DatePipe, TranslatePipe, ButtonModule, InputTextModule, TagModule,
-    ProductListComponent, SafetyWarningsComponent, WeatherWindowComponent,
+    ProductListComponent, SafetyWarningsComponent, WeatherWindowComponent, TreatmentPlanComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
@@ -97,6 +98,12 @@ import { WeatherWindowComponent } from './weather-window.component';
             <app-recommendation-product-list [items]="rec.excludedItems" [excluded]="true" />
           }
         </section>
+        @if (rec.items.length > 0) {
+          <section class="block">
+            <h2>{{ 'recommendation.plan.title' | translate }}</h2>
+            <app-recommendation-treatment-plan [recommendationId]="rec.id" />
+          </section>
+        }
         <section class="block">
           <h2>{{ 'recommendation.weather.title' | translate }}</h2>
           <app-recommendation-weather-window [weather]="rec.weather" />

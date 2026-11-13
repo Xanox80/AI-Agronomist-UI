@@ -66,10 +66,18 @@ describe('DiagnosisService', () => {
     expect(recognition.getDiagnosis).not.toHaveBeenCalled();
   });
 
-  it('runs diagnosis when none exists yet', async () => {
-    recognition.getDiagnosis.mockReturnValue(throwError(() => new Error('404')));
-    expect((await service().load('o1')).diagnosis).toBe(result);
-    expect(recognition.diagnose).toHaveBeenCalledWith('o1');
+  it('waits for the server diagnosis instead of starting another run', async () => {
+    recognition.getDiagnosis
+      .mockReturnValueOnce(throwError(() => new HttpErrorResponse({ status: 404 })))
+      .mockReturnValue(of(result));
+    vi.useFakeTimers();
+    const loading = service().load('o1');
+    await vi.runAllTimersAsync();
+    const snapshot = await loading;
+    vi.useRealTimers();
+    expect(snapshot.diagnosis).toBe(result);
+    expect(recognition.getDiagnosis).toHaveBeenCalledTimes(2);
+    expect(recognition.diagnose).not.toHaveBeenCalled();
   });
 
   it('reports a pending snapshot when the observation cannot be read offline', async () => {

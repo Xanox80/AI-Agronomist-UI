@@ -29,6 +29,15 @@ describe('StepPhotosComponent', () => {
     expect(host.querySelectorAll('.hints li')).toHaveLength(4);
   });
 
+  it('opens the capture hints until the first photo is taken', () => {
+    const wizard = createWizardStub();
+    wizard.organ.set('leaf');
+    expect((render(wizard).querySelector('details.hints') as HTMLDetailsElement).open).toBe(true);
+    TestBed.resetTestingModule();
+    wizard.photos.set([photo([])]);
+    expect((render(wizard).querySelector('details.hints') as HTMLDetailsElement).open).toBe(false);
+  });
+
   it('opens the rear camera input', () => {
     const input = render().querySelector('input[type="file"]') as HTMLInputElement;
     expect(input.getAttribute('capture')).toBe('environment');
@@ -37,15 +46,33 @@ describe('StepPhotosComponent', () => {
   it('explains what is wrong with a photo and prompts a retake', () => {
     const wizard = createWizardStub();
     wizard.photos.set([photo(['qualityGate.hint.clippedHighlights'])]);
-    const text = render(wizard).textContent;
-    expect(text).toContain('qualityGate.hint.clippedHighlights');
-    expect(text).toContain('scouting.quality.retake');
+    const host = render(wizard);
+    expect(host.textContent).toContain('qualityGate.hint.clippedHighlights');
+    expect(host.textContent).toContain('scouting.quality.retake');
+    expect(host.querySelector('.photo-card.needs-retake')).not.toBeNull();
   });
 
-  it('shows no retake prompt for a good photo', () => {
+  it('confirms a good photo and shows no retake prompt', () => {
     const wizard = createWizardStub();
     wizard.photos.set([photo([])]);
-    expect(render(wizard).querySelector('.retake-prompt')).toBeNull();
+    const host = render(wizard);
+    expect(host.querySelector('.retake-prompt')).toBeNull();
+    expect(host.textContent).toContain('scouting.quality.ok');
+  });
+
+  it('reports the running quality check', () => {
+    const wizard = createWizardStub();
+    wizard.checkingPhoto.set(true);
+    expect(render(wizard).textContent).toContain('scouting.photos.checking');
+  });
+
+  it('says when enough photos are taken instead of asking for another angle', () => {
+    const wizard = createWizardStub();
+    wizard.photos.set([photo([])]);
+    wizard.photoLimitReached.set(true);
+    const text = render(wizard).textContent;
+    expect(text).toContain('scouting.photos.limitReached');
+    expect(text).not.toContain('scouting.angles');
   });
 
   it('hands a chosen camera file to the wizard', async () => {

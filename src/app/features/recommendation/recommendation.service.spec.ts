@@ -10,4 +10,11 @@ describe('RecommendationService', () => {
     await TestBed.inject(RecommendationService).reject('r1', '  wrong crop ');
     expect(reject).toHaveBeenCalledWith('r1', { reason: 'wrong crop' });
   });
+
+  it('sends the tank volume when asking for a treatment plan', async () => {
+    const treatmentPlan = vi.fn().mockReturnValue(of({ status: 'ready' }));
+    TestBed.configureTestingModule({ providers: [{ provide: RecommendationApi, useValue: { treatmentPlan } }] });
+    await TestBed.inject(RecommendationService).treatmentPlan('r1', 2000);
+    expect(treatmentPlan).toHaveBeenCalledWith('r1', { tankVolumeL: 2000 });
+  });
 });

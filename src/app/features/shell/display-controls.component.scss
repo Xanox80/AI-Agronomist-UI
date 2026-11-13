@@ -1,0 +1,15 @@
+@use 'breakpoints' as *;
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+:host(.display-controls--compact) .controls__locale {
+  display: none;
+
+  @media (min-width: $desktop-min-width) {
+    display: inline-flex;
+  }
+}

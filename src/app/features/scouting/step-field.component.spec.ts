@@ -20,12 +20,26 @@ describe('StepFieldComponent', () => {
     expect(host.querySelectorAll('p-select')).toHaveLength(3);
   });
 
-  it('shows the GPS accuracy and the field suggestion', () => {
+  it('reports locating instead of a missing GPS while the fix is pending', () => {
+    const wizard = createWizardStub();
+    wizard.loading.set(true);
+    const text = render(wizard).textContent;
+    expect(text).toContain('scouting.field.locating');
+    expect(text).not.toContain('scouting.field.noGps');
+  });
+
+  it('shows the field suggestion when the field was picked by GPS', () => {
     const wizard = createWizardStub();
     wizard.fix.set({ lat: 1, lng: 2, accuracyM: 7 });
     wizard.fieldLinkMethod.set('gps');
-    const host = render(wizard);
-    expect(host.textContent).toContain('scouting.field.gpsFix');
-    expect(host.textContent).toContain('scouting.field.suggested');
+    const text = render(wizard).textContent;
+    expect(text).toContain('scouting.field.suggested');
+    expect(text).not.toContain('scouting.field.gpsFix');
+  });
+
+  it('shows the GPS accuracy when no field contains the position', () => {
+    const wizard = createWizardStub();
+    wizard.fix.set({ lat: 1, lng: 2, accuracyM: 7 });
+    expect(render(wizard).textContent).toContain('scouting.field.gpsFix');
   });
 });

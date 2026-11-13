@@ -19,6 +19,13 @@ describe('ShellNavService', () => {
     expect(paths).not.toContain('/catalog-admin');
   });
 
+  it('hides the chief-only infestation map from roles the route guard would bounce', () => {
+    for (const role of ['scout', 'mechanic', 'expert']) {
+      expect(pathsFor(role)).not.toContain('/heatmap');
+    }
+    expect(pathsFor('chief_agronomist')).toContain('/heatmap');
+  });
+
   it('shows every entry to the chief agronomist', () => {
     const paths = pathsFor('chief_agronomist');
     expect(paths).toContain('/expert');

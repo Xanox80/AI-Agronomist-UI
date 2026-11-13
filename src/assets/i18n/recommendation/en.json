@@ -110,6 +110,30 @@
     "taskTitle": {
       "treatment": "Treatment",
       "reinspection": "Re-inspection"
+    },
+    "plan": {
+      "title": "Treatment plan (AI)",
+      "intro": "A language model arranges the products above into a course, within the state registry rates. The program computes the proportions.",
+      "tank": "Sprayer tank volume, l",
+      "generate": "Draft treatment plan",
+      "regenerate": "Draft again",
+      "day": "Day {{day}}",
+      "rate": "Rate",
+      "water": "Spray volume",
+      "per100": "Per 100 l of solution",
+      "perTank": "Per tank ({{tank}} l)",
+      "haPerTank": "One tank covers",
+      "tanks": "Tank refills for the field",
+      "total": "Product for the whole field",
+      "ha": "ha",
+      "lPerHa": "l/ha",
+      "precautions": "Precautions",
+      "monitoring": "Check the result",
+      "model": "Model: {{model}}",
+      "noTreatment": "No treatment is needed now, so no plan is drafted.",
+      "rejected": "The model proposed a plan outside the registry limits, so it was rejected. Use the products and rates above.",
+      "unavailable": "Treatment plan unavailable: the Groq key is not configured or the service is not responding.",
+      "disclaimer": "Drafted by AI and checked against the registry; an agronomist must approve it before spraying."
     }
   }
 }

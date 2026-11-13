@@ -10,5 +10,6 @@ export const SCOUTING_CONFIG = {
   fieldsPageSize: 200,
   fieldsCacheKey: 'ap-scout.scouting.fields',
   cropMemoryCacheKey: 'ap-scout.scouting.crop-memory',
+  organMemoryCacheKey: 'ap-scout.scouting.organ-memory',
   geolocation: { enableHighAccuracy: true, timeoutMs: 8000, maximumAgeMs: 30000 },
 } as const;

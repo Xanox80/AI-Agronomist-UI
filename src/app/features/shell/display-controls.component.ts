@@ -3,7 +3,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { DisplayPreferences } from './display-preferences.service';
 
-/** Language switcher and sun-mode toggle, shared by the login page and the shell header. */
+/**
+ * Language switcher and sun-mode toggle, shared by the login page, settings and the shell header.
+ * With the host class `display-controls--compact` the language buttons hide on phones (settings keeps them).
+ */
 @Component({
   selector: 'app-display-controls',
   imports: [TranslatePipe, ButtonModule],
@@ -11,30 +14,26 @@ import { DisplayPreferences } from './display-preferences.service';
     <div class="controls" role="group" [attr.aria-label]="'shell.displayControls' | translate">
       @for (locale of prefs.locales; track locale) {
         <p-button
+          class="controls__locale"
           [label]="locale.toUpperCase()"
           size="small"
           [outlined]="prefs.locale() !== locale"
-          [attr.aria-pressed]="prefs.locale() === locale"
+          [pt]="{ root: { 'aria-pressed': prefs.locale() === locale } }"
           (onClick)="prefs.setLocale(locale)"
         />
       }
       <p-button
+        class="controls__sun"
         icon="pi pi-sun"
         size="small"
         [outlined]="!prefs.sunMode()"
-        [attr.aria-pressed]="prefs.sunMode()"
+        [pt]="{ root: { 'aria-pressed': prefs.sunMode() } }"
         [ariaLabel]="'shell.sunMode' | translate"
         (onClick)="prefs.toggleSunMode()"
       />
     </div>
   `,
-  styles: `
-    .controls {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-  `,
+  styleUrl: './display-controls.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DisplayControlsComponent {

@@ -54,3 +54,20 @@ export interface AutoApproveSettingDto {
   id: string; problemCategory?: ProblemCategory; diagnosisId?: string; minConfidence: number; enabled: boolean;
 }
 export type AutoApproveSettingInput = Omit<AutoApproveSettingDto, 'id'>;
+
+/** Mirrors backend treatment-plan.types.ts: tank and field proportions are computed by the backend, not the model. */
+export interface WorkingSolutionDto {
+  productPerHa: number; productUnit: string; waterLPerHa: number; productPer100L: number; tankVolumeL: number;
+  productPerTank: number; hectaresPerTank: number; tanksForField: number | null; productForField: number | null;
+}
+export interface TreatmentPlanApplicationDto {
+  productId: string; productName: string; rateValue: number; rateUnit: string; waterLPerHa: number; dayOffset: number;
+  timing: string; note: string; solution: WorkingSolutionDto;
+}
+export type TreatmentPlanStatus = 'ready' | 'no_treatment' | 'rejected';
+export interface TreatmentPlanDto {
+  recommendationId: string; status: TreatmentPlanStatus; model: string | null; summary: string;
+  applications: TreatmentPlanApplicationDto[]; precautions: string[]; monitoring: string; validationErrors: string[];
+  disclaimerCode: string; generatedAt: string;
+}
+export interface TreatmentPlanRequest { tankVolumeL?: number }

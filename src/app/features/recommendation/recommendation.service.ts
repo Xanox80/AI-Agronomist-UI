@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { RecommendationApi } from '../../core/api/recommendation.api';
 import { ObservationsApi } from '../../core/api/observations.api';
-import { ObservationDto, RecommendationDto } from '../../core/api/models';
+import { ObservationDto, RecommendationDto, TreatmentPlanDto } from '../../core/api/models';
 
 @Injectable({ providedIn: 'root' })
 export class RecommendationService {
@@ -33,5 +33,10 @@ export class RecommendationService {
 
   recompute(id: string, damagePercent?: number): Promise<RecommendationDto> {
     return firstValueFrom(this.api.recompute(id, { damagePercent }));
+  }
+
+  /** Asks the backend language model for a treatment course; it answers 503 when Groq is not configured or down. */
+  treatmentPlan(id: string, tankVolumeL?: number): Promise<TreatmentPlanDto> {
+    return firstValueFrom(this.api.treatmentPlan(id, { tankVolumeL }));
   }
 }

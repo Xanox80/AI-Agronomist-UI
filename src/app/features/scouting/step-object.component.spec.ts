@@ -14,24 +14,23 @@ describe('StepObjectComponent', () => {
     return fixture.nativeElement as HTMLElement;
   }
 
-  it('offers the six object types and no hints before one is picked', () => {
+  it('offers the six object types as a labelled radio group', () => {
     const host = render();
     expect(host.querySelectorAll('button[role="radio"]')).toHaveLength(6);
-    expect(host.querySelector('.hints')).toBeNull();
+    expect(host.querySelector('[role="radiogroup"]')?.getAttribute('aria-labelledby')).toBe('scout-object-title');
   });
 
-  it('selects an object type on click', () => {
+  it('chooses an object type with a single tap', () => {
     const wizard = createWizardStub();
     const host = render(wizard);
     (host.querySelectorAll('button[role="radio"]')[4] as HTMLButtonElement).click();
-    expect(wizard.organ()).toBe('pest');
+    expect(wizard.chooseOrgan).toHaveBeenCalledWith('pest');
   });
 
-  it('shows the capture hints of the chosen object type', () => {
+  it('marks the remembered object type as checked', () => {
     const wizard = createWizardStub();
     wizard.organ.set('leaf');
-    const host = render(wizard);
-    expect(host.querySelectorAll('.hints li')).toHaveLength(4);
-    expect(host.textContent).toContain('scouting.hints.leaf.extra');
+    const checked = render(wizard).querySelector('button[aria-checked="true"]');
+    expect(checked?.textContent).toContain('scouting.object.leaf');
   });
 });

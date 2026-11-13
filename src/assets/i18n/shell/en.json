@@ -4,6 +4,7 @@
     "navigation": "Main menu",
     "toggleSidebar": "Collapse or expand the menu",
     "logout": "Sign out",
+    "pendingUploads": "Waiting to upload: {{count}}. Open sync status",
     "displayControls": "Language and display mode",
     "sunMode": "Sun mode (high contrast)",
     "nav": {

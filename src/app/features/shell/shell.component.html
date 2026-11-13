@@ -6,18 +6,34 @@
       severity="secondary"
       [text]="true"
       [ariaLabel]="'shell.toggleSidebar' | translate"
-      [attr.aria-expanded]="!sidebarCollapsed()"
+      [pt]="{ root: { 'aria-expanded': !sidebarCollapsed() } }"
       (onClick)="toggleSidebar()"
     />
     <span class="shell__brand">{{ 'shell.brand' | translate }}</span>
-    @if (!online()) {
-      <span class="shell__offline" role="status"><i class="pi pi-wifi"></i> {{ 'common.offline' | translate }}</span>
-    }
+    <div class="shell__status" role="status">
+      @if (!online()) {
+        <span class="shell__chip shell__chip--offline">
+          <i class="pi pi-wifi" aria-hidden="true"></i>
+          <span class="shell__chip-text">{{ 'common.offline' | translate }}</span>
+        </span>
+      }
+      @if (pendingCount() > 0) {
+        <a
+          class="shell__chip shell__chip--pending"
+          routerLink="/home"
+          [attr.aria-label]="'shell.pendingUploads' | translate: { count: pendingCount() }"
+          [attr.title]="'shell.pendingUploads' | translate: { count: pendingCount() }"
+        >
+          <i class="pi pi-cloud-upload" aria-hidden="true"></i>
+          <span>{{ pendingCount() }}</span>
+        </a>
+      }
+    </div>
     <span class="shell__spacer"></span>
     @if (auth.user(); as user) {
       <span class="shell__user">{{ user.displayName }}</span>
     }
-    <app-display-controls />
+    <app-display-controls class="display-controls--compact" />
     <p-button
       icon="pi pi-sign-out"
       severity="secondary"
@@ -29,8 +45,14 @@
 
   <nav class="shell__nav" [attr.aria-label]="'shell.navigation' | translate">
     @for (item of navItems(); track item.path) {
-      <a class="nav-link" [routerLink]="item.path" routerLinkActive="nav-link--active">
-        <i class="pi" [class]="item.icon"></i>
+      <a
+        class="nav-link"
+        [routerLink]="item.path"
+        routerLinkActive="nav-link--active"
+        ariaCurrentWhenActive="page"
+        [attr.title]="sidebarCollapsed() ? (item.labelKey | translate) : null"
+      >
+        <i class="pi" [class]="item.icon" aria-hidden="true"></i>
         <span class="nav-link__label">{{ item.labelKey | translate }}</span>
       </a>
     }

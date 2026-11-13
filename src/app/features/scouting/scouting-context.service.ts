@@ -5,10 +5,12 @@ import { FieldsApi } from '../../core/api/fields.api';
 import { ObservationsApi } from '../../core/api/observations.api';
 import { BbchStageDto, CatalogPackDto, CropDto, FieldDto, LatLng } from '../../core/api/models';
 import { CatalogPackCache } from '../../core/offline/catalog-pack-cache.service';
+import { OBJECT_TYPES } from './object-types';
 import { contourContains } from './point-in-polygon';
 import { SCOUTING_CONFIG } from './scouting.config';
+import { ScoutingOrgan } from './scouting.types';
 
-/** Reference data of wizard step 1: fields (online or cached), GPS suggestion, remembered crop, crops, BBCH. */
+/** Reference data of the wizard: fields (online or cached), GPS suggestion, remembered crop and object type, crops, BBCH. */
 @Injectable({ providedIn: 'root' })
 export class ScoutingContextService {
   private readonly fieldsApi = inject(FieldsApi);
@@ -64,6 +66,16 @@ export class ScoutingContextService {
   rememberCropLocally(fieldId: string | undefined, cropId: string | undefined): void {
     if (!fieldId || !cropId) return;
     this.writeJson(SCOUTING_CONFIG.cropMemoryCacheKey, { ...this.readCropMemory(), [fieldId]: cropId });
+  }
+
+  /** The object type of the last observation, so a scout repeating the same check skips the choice. */
+  rememberedOrgan(): ScoutingOrgan | null {
+    const organ = this.readJson<string | null>(SCOUTING_CONFIG.organMemoryCacheKey, null);
+    return OBJECT_TYPES.find((candidate) => candidate === organ) ?? null;
+  }
+
+  rememberOrgan(organ: ScoutingOrgan): void {
+    this.writeJson(SCOUTING_CONFIG.organMemoryCacheKey, organ);
   }
 
   private async orCachedPack<T>(request: () => Promise<T[]>, fromPack: (pack: CatalogPackDto) => T[]): Promise<T[]> {

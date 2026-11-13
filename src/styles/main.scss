@@ -1,5 +1,6 @@
 @use 'variables';
 @use 'mixins';
+@use 'breakpoints' as *;
 
 * {
   box-sizing: border-box;
@@ -10,6 +11,19 @@ body {
   font-family: var(--p-font-family, 'Inter', system-ui, sans-serif);
   background: var(--ap-bg);
   color: var(--ap-text);
+}
+
+/* Phones: narrower gutters leave room for content at 360px width */
+@media (max-width: #{$desktop-min-width - 1px}) {
+  :root {
+    --scout-content-padding: 1rem;
+  }
+}
+
+/* ── Keyboard focus: visible on every theme; components may refine it ── */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--ap-focus-width) solid var(--ap-focus-ring);
+  outline-offset: var(--ap-focus-offset);
 }
 
 /* ── Page layout helpers ── */
@@ -71,6 +85,17 @@ body {
   &.p-button-sm {
     padding: 0.35rem 0.75rem !important;
     font-size: 0.8rem !important;
+  }
+
+  &.p-button-lg {
+    min-height: var(--ap-touch-primary);
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+  }
+
+  &:focus-visible {
+    outline: var(--ap-focus-width) solid var(--ap-focus-ring) !important;
+    outline-offset: var(--ap-focus-offset);
   }
 }
 

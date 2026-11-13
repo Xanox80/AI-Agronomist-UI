@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
+import { SyncService } from '../../core/offline/sync.service';
 import { AuthService } from '../auth/auth.service';
 import { DisplayControlsComponent } from './display-controls.component';
 import { OnlineStatusService } from './online-status.service';
@@ -18,6 +19,7 @@ export class ShellComponent {
   protected readonly auth = inject(AuthService);
   protected readonly navItems = inject(ShellNavService).items;
   protected readonly online = inject(OnlineStatusService).online;
+  protected readonly pendingCount = inject(SyncService).pendingCount;
   protected readonly sidebarCollapsed = signal(false);
 
   constructor() {

@@ -17,6 +17,10 @@ import { CapturedPhoto, GeoFix, ScoutingOrgan, VoiceNote } from './scouting.type
 import { VoiceRecorderService } from './voice-recorder.service';
 
 const OBSERVATION_QUERY_PARAM = 'observationId';
+const EXTENSION_STEPS: readonly ScoutingStep[] = ['photos'];
+
+/** How a submit ended when the page stays open: saved on the server, or kept on the device until sync. */
+export type SavedOutcome = 'stored' | 'queuedOffline';
 
 export interface SelectOption<T> {
   value: T;
@@ -40,8 +44,13 @@ export class ScoutingWizard implements OnDestroy {
     initialValue: this.translate.currentLang,
   });
 
+  /** Set when the scout came from an unsure diagnosis to add photos to that observation (FR-8). */
+  readonly extendedObservationId = signal<string | undefined>(undefined);
+  readonly steps = computed<readonly ScoutingStep[]>(() => (this.extendedObservationId() ? EXTENSION_STEPS : SCOUTING_STEPS));
+  readonly stepCount = computed(() => this.steps().length);
   readonly step = signal(0);
-  readonly currentStep = computed<ScoutingStep>(() => SCOUTING_STEPS[this.step()]);
+  readonly currentStep = computed<ScoutingStep>(() => this.steps()[this.step()]);
+  readonly loading = signal(false);
   readonly fields = signal<FieldDto[]>([]);
   readonly fieldId = signal<string | undefined>(undefined);
   readonly suggestedFieldId = signal<string | undefined>(undefined);
@@ -58,15 +67,18 @@ export class ScoutingWizard implements OnDestroy {
   readonly voiceError = signal(false);
   readonly submitting = signal(false);
   readonly submitFailed = signal(false);
-  /** Set when the scout came from an unsure diagnosis to add photos to that observation (FR-8). */
-  readonly extendedObservationId = signal<string | undefined>(undefined);
+  readonly savedOutcome = signal<SavedOutcome | null>(null);
+  readonly online = this.connectivity.online;
+  private readonly pendingCaptures = signal(0);
+  readonly checkingPhoto = computed(() => this.pendingCaptures() > 0);
+  private readonly finished = signal(false);
   private readonly storedPhotoCount = signal(0);
   private readonly photoLimit = computed(() => SCOUTING_CONFIG.maxPhotos - this.storedPhotoCount());
 
   readonly recording = this.voiceRecorder.recording;
   readonly voiceSupported = this.voiceRecorder.isSupported();
   readonly isQuickCapture = computed(() => this.auth.role() === 'mechanic');
-  readonly isLastStep = computed(() => this.step() === SCOUTING_CONFIG.stepCount - 1);
+  readonly isLastStep = computed(() => this.step() === this.stepCount() - 1);
   private readonly stepGuards: Record<ScoutingStep, () => boolean> = {
     field: () => true,
     object: () => this.organ() !== null,
@@ -74,7 +86,14 @@ export class ScoutingWizard implements OnDestroy {
     note: () => true,
   };
   readonly canAdvance = computed(() => this.stepGuards[this.currentStep()]());
+  /** Translation key telling why "Next" is disabled, or null when the step is complete. */
+  readonly blockedHintKey = computed(() => (this.canAdvance() ? null : `scouting.blocked.${this.currentStep()}`));
   readonly canAddPhoto = computed(() => this.photos().length < this.photoLimit());
+  readonly photoLimitReached = computed(() => !this.canAddPhoto() && this.photos().length > 0);
+  /** Photos or notes that would be lost by leaving before they are saved. */
+  readonly hasUnsavedWork = computed(
+    () => !this.finished() && (this.photos().length > 0 || this.textNote().trim() !== '' || this.voiceNote() !== null),
+  );
   readonly fieldLinkMethod = computed<FieldLinkMethod>(() => {
     const id = this.fieldId();
     if (!id) return 'none';
@@ -92,26 +111,31 @@ export class ScoutingWizard implements OnDestroy {
   );
 
   private photoSlot: string | null = null;
-  private capturing = 0;
 
   async start(): Promise<void> {
     const extended = new URLSearchParams(window.location.search).get(OBSERVATION_QUERY_PARAM);
     if (extended) return this.startExtension(extended);
-    const [fields, crops, fix] = await Promise.all([
-      this.context.loadFields(), this.context.loadCrops(), this.locateIfAllowed(),
-    ]);
-    this.fields.set(fields);
-    this.crops.set(crops);
-    this.fix.set(fix);
-    const suggested = fix ? await this.context.suggestFieldId(fix, fields) : undefined;
-    this.suggestedFieldId.set(suggested);
-    await this.selectField(suggested);
+    this.organ.set(this.context.rememberedOrgan());
+    this.loading.set(true);
+    try {
+      const [fields, crops, fix] = await Promise.all([
+        this.context.loadFields(), this.context.loadCrops(), this.locateIfAllowed(),
+      ]);
+      this.fields.set(fields);
+      this.crops.set(crops);
+      this.fix.set(fix);
+      const suggested = fix ? await this.context.suggestFieldId(fix, fields) : undefined;
+      this.suggestedFieldId.set(suggested);
+      await this.selectField(suggested);
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   private async startExtension(observationId: string): Promise<void> {
-    this.storedPhotoCount.set(await this.context.loadPhotoCount(observationId).catch(() => 0));
     this.extendedObservationId.set(observationId);
-    this.step.set(SCOUTING_STEPS.indexOf('photos'));
+    this.step.set(0);
+    this.storedPhotoCount.set(await this.context.loadPhotoCount(observationId).catch(() => 0));
   }
 
   async selectField(fieldId: string | undefined): Promise<void> {
@@ -136,20 +160,21 @@ export class ScoutingWizard implements OnDestroy {
   }
 
   async addPhoto(file: Blob): Promise<void> {
-    if (this.photos().length + this.capturing >= this.photoLimit()) return;
-    this.capturing++;
-    try {
-      const photo = await this.photoCapture.capture(file);
-      this.photos.update((photos) => [...photos, photo]);
-    } finally {
-      this.capturing--;
-    }
+    if (this.photos().length + this.pendingCaptures() >= this.photoLimit()) return;
+    const photo = await this.checkQuality(file);
+    this.photos.update((photos) => [...photos, photo]);
   }
 
   async retakePhoto(clientId: string, file: Blob): Promise<void> {
-    const photo = await this.photoCapture.capture(file);
+    const photo = await this.checkQuality(file);
     this.releaseById(clientId);
     this.photos.update((photos) => photos.map((existing) => (existing.clientId === clientId ? photo : existing)));
+  }
+
+  /** Picking the object type is the whole step, so the wizard moves on to the photos right away. */
+  chooseOrgan(organ: ScoutingOrgan): void {
+    this.organ.set(organ);
+    this.next();
   }
 
   removePhoto(clientId: string): void {
@@ -171,7 +196,7 @@ export class ScoutingWizard implements OnDestroy {
   }
 
   next(): void {
-    if (this.canAdvance()) this.step.update((step) => Math.min(step + 1, SCOUTING_CONFIG.stepCount - 1));
+    if (this.canAdvance()) this.step.update((step) => Math.min(step + 1, this.stepCount() - 1));
   }
 
   back(): void {
@@ -187,6 +212,7 @@ export class ScoutingWizard implements OnDestroy {
     try {
       if (extended) {
         await this.submitter.addPhotos(extended, this.storedPhotoCount(), this.photos());
+        this.finished.set(true);
         await this.router.navigate(['/diagnosis', extended]);
         return;
       }
@@ -203,12 +229,28 @@ export class ScoutingWizard implements OnDestroy {
         fix: this.fix(),
         isQuickCapture: this.isQuickCapture(),
       });
-      await this.router.navigate(this.opensDiagnosis() ? ['/diagnosis', observationId] : ['/home']);
+      this.context.rememberOrgan(organ!);
+      this.finished.set(true);
+      if (this.opensDiagnosis()) await this.router.navigate(['/diagnosis', observationId]);
+      else this.savedOutcome.set(this.connectivity.online() ? 'stored' : 'queuedOffline');
     } catch {
       this.submitFailed.set(true);
     } finally {
       this.submitting.set(false);
     }
+  }
+
+  /** Starts the next observation on the same field: place, crop and object type stay, photos and notes are cleared. */
+  scoutAgain(): void {
+    this.photos().forEach((photo) => this.photoCapture.release(photo));
+    this.photos.set([]);
+    this.textNote.set('');
+    this.voiceNote.set(null);
+    this.scaleMarkerUsed.set(false);
+    this.submitFailed.set(false);
+    this.savedOutcome.set(null);
+    this.finished.set(false);
+    this.step.set(SCOUTING_STEPS.indexOf('photos'));
   }
 
   /** Offline the observation is only in the outbox, so there is no diagnosis to open yet. */
@@ -224,6 +266,15 @@ export class ScoutingWizard implements OnDestroy {
   ngOnDestroy(): void {
     this.voiceRecorder.stop();
     this.photos().forEach((photo) => this.photoCapture.release(photo));
+  }
+
+  private async checkQuality(file: Blob): Promise<CapturedPhoto> {
+    this.pendingCaptures.update((count) => count + 1);
+    try {
+      return await this.photoCapture.capture(file);
+    } finally {
+      this.pendingCaptures.update((count) => count - 1);
+    }
   }
 
   private releaseById(clientId: string): void {

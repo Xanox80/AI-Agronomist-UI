@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { CatalogApi } from '../../core/api/catalog.api';
 import { ObservationsApi } from '../../core/api/observations.api';
 import { RecognitionApi } from '../../core/api/recognition.api';
@@ -52,10 +52,9 @@ export class DiagnosisService {
     }
   }
 
+  /** The server diagnoses synced observations itself (FR-26); starting a second run here would double the provider calls. */
   private fetchDiagnosis(observationId: string): Promise<DiagnosisResultDto | undefined> {
-    return firstValueFrom(
-      this.recognition.getDiagnosis(observationId).pipe(catchError(() => this.recognition.diagnose(observationId))),
-    ).catch(() => undefined);
+    return firstValueFrom(this.recognition.getDiagnosis(observationId)).catch(() => undefined);
   }
 
   answer(resultId: string, answers: Record<string, string>): Promise<DiagnosisResultDto> {
